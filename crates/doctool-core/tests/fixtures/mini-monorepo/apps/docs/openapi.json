@@ -1,0 +1,24 @@
+{
+  "openapi": "3.0.0",
+  "info": { "title": "fixture", "version": "1.0.0" },
+  "paths": {
+    "/products": {
+      "get": {
+        "operationId": "ProductsController_list",
+        "summary": "List products"
+      }
+    },
+    "/refunds": {
+      "post": {
+        "operationId": "RefundsController_create",
+        "summary": "Create refund"
+      }
+    },
+    "/internal/health": {
+      "get": {
+        "operationId": "InternalController_health",
+        "summary": "Internal only"
+      }
+    }
+  }
+}

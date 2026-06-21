@@ -1,0 +1,13 @@
+[workspace]
+members = ["crates/doctool-core", "crates/doctool-cli"]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+license = "MIT"
+authors = ["lomi. <hello@lomi.africa>"]
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1

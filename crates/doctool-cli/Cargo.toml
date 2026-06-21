@@ -1,0 +1,22 @@
+[package]
+name = "doctool-cli"
+version = "0.1.0"
+description = "Documentation tooling CLI for the lomi. monorepo (doctool)"
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[[bin]]
+name = "dt"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1.0"
+clap = { version = "4.5", features = ["derive"] }
+colored = "3.0"
+doctool-core = { path = "../doctool-core" }
+serde_json = "1.0"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+
+[dev-dependencies]
+tempfile = "3"

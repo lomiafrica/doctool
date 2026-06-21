@@ -1,0 +1,10 @@
+openapi = "apps/docs/openapi.json"
+agent_openapi = "apps/docs/openapi.json"
+docs_content = "apps/docs/content/docs"
+sdk_manifest = "apps/sdks/ts/src/generated/sdk-public-methods.json"
+mcp_manifest = "apps/mcp/src/generated/tools-manifest.json"
+expected_public_operations = "apps/docs/lib/scripts/manual-api/_expected-public-operations.json"
+code_roots = ["apps/api"]
+competitors = "apps/design/docs/competitors"
+index_cache = ".doctool/index.json"
+graph_cache = ".doctool/graph.json"
