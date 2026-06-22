@@ -1,3 +1,5 @@
 /target/
 **/.doctool/
+!crates/doctool-core/tests/fixtures/**/.doctool/
+!crates/doctool-core/tests/fixtures/**/.doctool/i18n.lock
 .DS_Store
