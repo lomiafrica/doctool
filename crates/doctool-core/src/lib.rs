@@ -1,15 +1,17 @@
 pub mod config;
 pub mod drift;
 pub mod graph;
+pub mod i18n;
 pub mod index;
 pub mod intel;
 pub mod rerank;
 pub mod snapshot;
 pub mod sources;
 
-pub use config::{find_monorepo_root, DoctoolConfig};
-pub use drift::{build_drift_report, merge_ts_errors, DriftIssue, DriftReport};
+pub use config::{find_monorepo_root, DoctoolConfig, I18nConfig};
+pub use drift::{build_drift_report, build_next_steps, merge_ts_errors, DriftIssue, DriftReport};
 pub use graph::{build_knowledge_graph, KnowledgeGraph};
+pub use i18n::{run_sync_i18n, LockFileManager, SyncI18nOptions, SyncI18nReport};
 pub use index::CodeIndex;
 pub use snapshot::{DoctoolEngine, DoctoolSnapshot};
 

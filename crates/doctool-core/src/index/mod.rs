@@ -123,6 +123,37 @@ impl CodeIndex {
         Ok(stats)
     }
 
+    /// Embed indexed elements into the vector store (best-effort; skips when no API key).
+    pub async fn populate_vectors(&mut self) {
+        const BATCH: usize = 32;
+        let snippets: Vec<(String, String)> = self
+            .elements
+            .iter()
+            .filter_map(|element| {
+                let text = embed_snippet(element);
+                if text.is_empty() {
+                    None
+                } else {
+                    Some((element.id.clone(), text))
+                }
+            })
+            .collect();
+
+        for chunk in snippets.chunks(BATCH) {
+            self.upsert_batch(chunk).await;
+        }
+    }
+
+    async fn upsert_batch(&mut self, batch: &[(String, String)]) {
+        for (id, text) in batch {
+            if let Ok(vec) = embedder::get_embedding(&self.client, text).await {
+                if !vec.is_empty() {
+                    self.vector_store.upsert(id.clone(), vec);
+                }
+            }
+        }
+    }
+
     /// Scan multiple code roots and merge element lists.
     pub fn scan_roots(&mut self, roots: &[impl AsRef<Path>]) -> Result<Vec<ScanStats>, String> {
         *self = Self::new();
@@ -238,6 +269,21 @@ impl CodeIndex {
             _ => Ok(top_initial.into_iter().take(15).collect()),
         }
     }
+}
+
+fn embed_snippet(element: &CodeElement) -> String {
+    let mut parts = vec![element.name.clone()];
+    if let Some(sig) = &element.signature {
+        parts.push(sig.clone());
+    }
+    if let Some(doc) = &element.docstring {
+        parts.push(doc.clone());
+    }
+    let code_preview: String = element.code.chars().take(512).collect();
+    if !code_preview.is_empty() {
+        parts.push(code_preview);
+    }
+    parts.join("\n")
 }
 
 fn cosine_similarity(a: &[f32], b: &[f32]) -> f32 {

@@ -49,12 +49,14 @@ impl DoctoolEngine {
         }
     }
 
-    pub fn scan(&mut self) -> Result<DoctoolSnapshot> {
+    pub async fn scan(&mut self) -> Result<DoctoolSnapshot> {
         let roots = self.config.code_root_paths(&self.monorepo_root);
         let code_stats = self
             .code_index
             .scan_roots(&roots)
             .map_err(|e| anyhow::anyhow!(e))?;
+
+        self.code_index.populate_vectors().await;
 
         let openapi_path = self.config.resolve(&self.monorepo_root, &self.config.openapi);
         let docs_path = self.config.resolve(&self.monorepo_root, &self.config.docs_content);

@@ -47,9 +47,11 @@ fn scan_fixture_monorepo_json() {
     let stdout = String::from_utf8_lossy(&output.stdout);
     assert!(stdout.contains("code_element_count"));
 
-    // Keep fixture tree clean (scan writes .doctool/).
-    let doctool_dir = root.join(".doctool");
-    let _ = std::fs::remove_dir_all(&doctool_dir);
+    // Keep fixture tree clean (scan writes index/graph); preserve i18n.lock.
+    let index_path = root.join(".doctool/index.json");
+    let graph_path = root.join(".doctool/graph.json");
+    let _ = std::fs::remove_file(index_path);
+    let _ = std::fs::remove_file(graph_path);
 }
 
 #[test]
@@ -72,6 +74,30 @@ fn drift_fixture_exits_nonzero() {
         !output.status.success(),
         "fixture drift should report issues"
     );
+}
+
+#[test]
+fn sync_i18n_fixture_check_exits_nonzero() {
+    let root = fixture_root();
+    let config = root.join("doctool.config.toml");
+    let output = Command::new(dt_bin())
+        .args([
+            "--config",
+            config.to_str().unwrap(),
+            "--root",
+            root.to_str().unwrap(),
+            "sync-i18n",
+            "--check",
+        ])
+        .output()
+        .expect("spawn dt sync-i18n --check");
+
+    assert!(
+        !output.status.success(),
+        "fixture i18n check should report issues"
+    );
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    assert!(stdout.contains("locale_gap") || stdout.contains("locale_stale"));
 }
 
 #[test]

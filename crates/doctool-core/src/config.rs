@@ -4,6 +4,64 @@ use std::path::{Path, PathBuf};
 use anyhow::{Context, Result};
 use serde::Deserialize;
 
+#[derive(Debug, Clone, Deserialize, Default)]
+pub struct I18nMdxConfig {
+    #[serde(default = "default_i18n_include")]
+    pub include: Vec<String>,
+    #[serde(default = "default_i18n_exclude")]
+    pub exclude: Vec<String>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct I18nConfig {
+    #[serde(default = "default_i18n_source")]
+    pub source: String,
+    #[serde(default = "default_i18n_targets")]
+    pub targets: Vec<String>,
+    #[serde(default = "default_i18n_lock_cache")]
+    pub lock_cache: String,
+    #[serde(default)]
+    pub mdx: I18nMdxConfig,
+}
+
+fn default_i18n_source() -> String {
+    "en".into()
+}
+
+fn default_i18n_targets() -> Vec<String> {
+    vec!["fr".into()]
+}
+
+fn default_i18n_lock_cache() -> String {
+    ".doctool/i18n.lock".into()
+}
+
+fn default_i18n_include() -> Vec<String> {
+    vec!["apps/docs/content/docs/**/*.mdx".into()]
+}
+
+fn default_i18n_exclude() -> Vec<String> {
+    vec![
+        "**/*.fr.mdx".into(),
+        "**/*.es.mdx".into(),
+        "**/*.zh.mdx".into(),
+    ]
+}
+
+impl Default for I18nConfig {
+    fn default() -> Self {
+        Self {
+            source: default_i18n_source(),
+            targets: default_i18n_targets(),
+            lock_cache: default_i18n_lock_cache(),
+            mdx: I18nMdxConfig {
+                include: default_i18n_include(),
+                exclude: default_i18n_exclude(),
+            },
+        }
+    }
+}
+
 #[derive(Debug, Clone, Deserialize)]
 pub struct DoctoolConfig {
     pub openapi: String,
@@ -16,6 +74,8 @@ pub struct DoctoolConfig {
     pub competitors: String,
     pub index_cache: String,
     pub graph_cache: String,
+    #[serde(default)]
+    pub i18n: Option<I18nConfig>,
 }
 
 impl Default for DoctoolConfig {
@@ -37,11 +97,16 @@ impl Default for DoctoolConfig {
             competitors: "apps/design/docs/competitors".into(),
             index_cache: ".doctool/index.json".into(),
             graph_cache: ".doctool/graph.json".into(),
+            i18n: Some(I18nConfig::default()),
         }
     }
 }
 
 impl DoctoolConfig {
+    pub fn i18n_config(&self) -> I18nConfig {
+        self.i18n.clone().unwrap_or_default()
+    }
+
     pub fn load(path: Option<&Path>) -> Result<Self> {
         if let Some(path) = path {
             let raw = fs::read_to_string(path)

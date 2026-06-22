@@ -14,3 +14,12 @@ code_roots = [
 competitors = "apps/design/docs/competitors"
 index_cache = ".doctool/index.json"
 graph_cache = ".doctool/graph.json"
+
+[i18n]
+source = "en"
+targets = ["fr"]
+lock_cache = ".doctool/i18n.lock"
+
+[i18n.mdx]
+include = ["apps/docs/content/docs/**/*.mdx"]
+exclude = ["**/*.fr.mdx", "**/*.es.mdx", "**/*.zh.mdx"]

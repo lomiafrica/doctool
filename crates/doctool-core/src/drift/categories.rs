@@ -6,6 +6,9 @@ pub enum DriftCategory {
     MissingEndpoint,
     OrphanDoc,
     LocaleGap,
+    LocaleStale,
+    LocaleStructure,
+    LocaleOrphan,
     SdkUnmentioned,
     GuideDeadLink,
 }
@@ -16,9 +19,36 @@ impl DriftCategory {
             Self::MissingEndpoint => "missing_endpoint",
             Self::OrphanDoc => "orphan_doc",
             Self::LocaleGap => "locale_gap",
+            Self::LocaleStale => "locale_stale",
+            Self::LocaleStructure => "locale_structure",
+            Self::LocaleOrphan => "locale_orphan",
             Self::SdkUnmentioned => "sdk_unmentioned",
             Self::GuideDeadLink => "guide_dead_link",
         }
+    }
+
+    pub fn suggested_command(self) -> Option<&'static str> {
+        match self {
+            Self::MissingEndpoint => Some("dt scaffold"),
+            Self::LocaleGap => Some("dt sync-i18n --scaffold-missing"),
+            Self::LocaleStale => Some("dt sync-i18n lock"),
+            Self::LocaleStructure => None,
+            Self::LocaleOrphan => None,
+            _ => None,
+        }
+    }
+
+    pub fn all() -> &'static [Self] {
+        &[
+            Self::MissingEndpoint,
+            Self::OrphanDoc,
+            Self::LocaleGap,
+            Self::LocaleStale,
+            Self::LocaleStructure,
+            Self::LocaleOrphan,
+            Self::SdkUnmentioned,
+            Self::GuideDeadLink,
+        ]
     }
 }
 

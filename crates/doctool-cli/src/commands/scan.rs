@@ -6,7 +6,7 @@ use doctool_core::{DoctoolConfig, DoctoolEngine};
 
 pub async fn run(config: &DoctoolConfig, monorepo_root: &Path, json: bool) -> Result<()> {
     let mut engine = DoctoolEngine::new(config.clone(), monorepo_root);
-    let snapshot = engine.scan()?;
+    let snapshot = engine.scan().await?;
     engine.save_snapshot(&snapshot)?;
 
     if json {

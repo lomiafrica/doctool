@@ -3,17 +3,25 @@ use std::process::Command;
 use anyhow::{bail, Context, Result};
 
 pub fn run_pnpm_in_docs(monorepo_root: &std::path::Path, script: &str) -> Result<()> {
-    let docs_dir = monorepo_root.join("apps/docs");
-    let status = Command::new("pnpm")
-        .arg(script)
-        .current_dir(&docs_dir)
-        .status()
-        .with_context(|| format!("Failed to run pnpm {script} in {}", docs_dir.display()))?;
-
-    if !status.success() {
+    let (ok, _) = run_pnpm_in_docs_capture(monorepo_root, script)?;
+    if !ok {
         bail!("pnpm {script} failed in apps/docs");
     }
     Ok(())
+}
+
+pub fn run_pnpm_in_docs_capture(monorepo_root: &std::path::Path, script: &str) -> Result<(bool, String)> {
+    let docs_dir = monorepo_root.join("apps/docs");
+    let output = Command::new("pnpm")
+        .arg(script)
+        .current_dir(&docs_dir)
+        .output()
+        .with_context(|| format!("Failed to run pnpm {script} in {}", docs_dir.display()))?;
+
+    let stderr = String::from_utf8_lossy(&output.stderr).to_string();
+    let stdout = String::from_utf8_lossy(&output.stdout).to_string();
+    let combined = format!("{stdout}\n{stderr}");
+    Ok((output.status.success(), combined))
 }
 
 pub fn run_scaffold(monorepo_root: &std::path::Path) -> Result<()> {

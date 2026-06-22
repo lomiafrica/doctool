@@ -1,3 +1,5 @@
+pub mod document;
+
 use std::collections::{HashMap, HashSet};
 use std::fs;
 use std::path::Path;
@@ -82,7 +84,7 @@ pub fn load_mdx_index(content_root: &Path) -> Result<MdxIndex> {
     Ok(MdxIndex { pages, valid_slugs })
 }
 
-fn split_frontmatter(raw: &str) -> (String, String) {
+pub(crate) fn split_frontmatter(raw: &str) -> (String, String) {
     if raw.starts_with("---") {
         if let Some(end) = raw[3..].find("\n---") {
             let fm = raw[3..3 + end].trim().to_string();
@@ -93,7 +95,7 @@ fn split_frontmatter(raw: &str) -> (String, String) {
     (String::new(), raw.to_string())
 }
 
-fn parse_frontmatter(fm: &str) -> HashMap<String, String> {
+pub(crate) fn parse_frontmatter(fm: &str) -> HashMap<String, String> {
     let mut map = HashMap::new();
     for line in fm.lines() {
         let Some((key, value)) = line.split_once(':') else {

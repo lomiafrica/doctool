@@ -632,6 +632,7 @@ dependencies = [
  "clap",
  "colored",
  "doctool-core",
+ "serde",
  "serde_json",
  "tempfile",
  "tokio",

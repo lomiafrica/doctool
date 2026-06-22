@@ -56,13 +56,13 @@ fn knowledge_graph_links_api_doc_to_operation() {
     assert!(graph.edges.iter().any(|e| e.relation == "documents"));
 }
 
-#[test]
-fn engine_scan_produces_snapshot_and_caches() {
+#[tokio::test]
+async fn engine_scan_produces_snapshot_and_caches() {
     let root = mini_monorepo_root();
     let config = load_fixture_config();
     let mut engine = DoctoolEngine::new(config.clone(), &root);
 
-    let snapshot = engine.scan().expect("scan fixture monorepo");
+    let snapshot = engine.scan().await.expect("scan fixture monorepo");
     assert!(snapshot.code_element_count > 0);
     assert!(!snapshot.openapi.operations.is_empty());
     assert!(!snapshot.mdx.pages.is_empty());
@@ -80,10 +80,9 @@ fn engine_scan_produces_snapshot_and_caches() {
     let loaded = reload.load_snapshot().expect("load snapshot");
     assert_eq!(loaded.code_element_count, snapshot.code_element_count);
 
-    // Cleanup artifact so fixture tree stays clean in dev.
+    // Cleanup scan artifacts; preserve i18n.lock in fixture .doctool/.
     let _ = fs::remove_file(index_path);
     let _ = fs::remove_file(graph_path);
-    let _ = fs::remove_dir(root.join(".doctool"));
 }
 
 #[test]

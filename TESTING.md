@@ -56,6 +56,9 @@ A **minimal fake monorepo** with intentional drift issues:
 | `missing_endpoint` | `POST /refunds` in OpenAPI allowlist, no MDX page |
 | `orphan_doc` | `GET /orphan/only-in-docs` documented but not public |
 | `locale_gap` | `build/guides/getting-started.mdx` without `.fr.mdx` |
+| `locale_stale` | `build/guides/stale-en.mdx` vs `.doctool/i18n.lock` |
+| `locale_structure` | Extra H2 in `stale-en.fr.mdx` vs EN |
+| `locale_orphan` | `orphan-fr-only.fr.mdx` with no EN sibling |
 | `guide_dead_link` | Link to `/api/missing/MissingController_action` |
 | `sdk_unmentioned` | `neverMentionedInDocs` not referenced in MDX corpus |
 
@@ -74,9 +77,15 @@ cd apps/doctool && cargo test --workspace
 # Integration tests only
 cargo test -p doctool-core --test drift_integration
 cargo test -p doctool-core --test sources_integration
+cargo test -p doctool-core --test i18n_integration
 
 # CLI smoke
 cargo test -p doctool-cli --test cli_smoke
+
+# i18n sync (fixture — expect non-zero)
+./target/debug/dt --root crates/doctool-core/tests/fixtures/mini-monorepo \
+  --config crates/doctool-core/tests/fixtures/mini-monorepo/doctool.config.toml \
+  sync-i18n --check || true
 
 # Local smoke script (tests + fixture scan/drift + release build)
 ./apps/doctool/scripts/smoke-test.sh

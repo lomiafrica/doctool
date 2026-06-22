@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::path::Path;
 
 use anyhow::Result;
@@ -27,12 +28,35 @@ pub struct DriftIssue {
 pub struct DriftReport {
     pub issues: Vec<DriftIssue>,
     pub issue_count: usize,
+    #[serde(default)]
+    pub next_steps: Vec<String>,
 }
 
 impl DriftReport {
     pub fn is_clean(&self) -> bool {
         self.issues.is_empty()
     }
+}
+
+pub fn build_next_steps(issues: &[DriftIssue]) -> Vec<String> {
+    let mut steps = Vec::new();
+    let mut seen = HashSet::new();
+
+    for issue in issues {
+        let cmd = match issue.category.as_str() {
+            "missing_endpoint" => Some("dt scaffold"),
+            "locale_gap" => Some("dt sync-i18n --scaffold-missing"),
+            "locale_stale" => Some("dt sync-i18n lock"),
+            "guide_dead_link" => Some("Fix dead internal links in MDX"),
+            _ => None,
+        };
+        if let Some(step) = cmd {
+            if seen.insert(step.to_string()) {
+                steps.push(step.to_string());
+            }
+        }
+    }
+    steps
 }
 
 pub fn build_drift_report(config: &DoctoolConfig, monorepo_root: &Path) -> Result<DriftReport> {
@@ -99,16 +123,23 @@ pub fn build_drift_report(config: &DoctoolConfig, monorepo_root: &Path) -> Resul
     }
 
     let issue_count = issues.len();
+    let next_steps = build_next_steps(&issues);
     Ok(DriftReport {
         issues,
         issue_count,
+        next_steps,
     })
 }
 
 pub fn drift_from_snapshot(snapshot: &DoctoolSnapshot) -> DriftReport {
     let issues = snapshot.drift_issues.clone();
     let issue_count = issues.len();
-    DriftReport { issues, issue_count }
+    let next_steps = build_next_steps(&issues);
+    DriftReport {
+        issues,
+        issue_count,
+        next_steps,
+    }
 }
 
 pub fn merge_ts_errors(ts_stderr: &str) -> Vec<DriftIssue> {
