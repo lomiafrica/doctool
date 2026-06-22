@@ -1,6 +1,6 @@
 # Contributing to doctool
 
-Maintainer tooling for documentation drift, indexing, and (future) AI-assisted prose.
+Maintainer tooling for documentation drift, indexing, i18n, and AI-assisted prose.
 
 ## Local development
 
@@ -28,6 +28,10 @@ Run from monorepo root:
 | `crates/doctool-core/src/intel/` | Composer `code_intel` fork (scan, parse, search) |
 | `crates/doctool-core/src/sources/` | OpenAPI, MDX, SDK, competitors connectors |
 | `crates/doctool-core/src/drift/` | Rust-native drift categories |
+| `crates/doctool-core/src/i18n/` | Lock file, deterministic sync, LLM translate |
+| `crates/doctool-core/src/llm/` | OpenAI-compatible client, chunking, prompts, mock provider |
+| `crates/doctool-core/src/improve/` | RAG-backed MDX improve |
+| `crates/doctool-core/src/diff/` | Unified MDX diff (`similar` crate) |
 | `crates/doctool-core/src/graph/` | Knowledge graph export |
 | `crates/doctool-cli/` | CLI binary |
 

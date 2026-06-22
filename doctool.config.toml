@@ -23,3 +23,9 @@ lock_cache = ".doctool/i18n.lock"
 [i18n.mdx]
 include = ["apps/docs/content/docs/**/*.mdx"]
 exclude = ["**/*.fr.mdx", "**/*.es.mdx", "**/*.zh.mdx"]
+
+[llm]
+provider = "openai_compatible"
+model = "gpt-4.1-mini"
+base_url = "https://api.openai.com/v1"
+temperature = 0.2

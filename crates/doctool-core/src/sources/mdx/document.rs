@@ -71,6 +71,77 @@ impl MdxDocument {
             .collect()
     }
 
+    /// Whether a segment key should be sent to the translation LLM.
+    pub fn is_translatable_segment_key(&self, key: &str) -> bool {
+        if key.starts_with("frontmatter:") {
+            let field = key.strip_prefix("frontmatter:").unwrap_or("");
+            return field == "title" || field == "description";
+        }
+        if let Some(idx_str) = key.strip_prefix("body:") {
+            if let Ok(idx) = idx_str.parse::<usize>() {
+                return self
+                    .body_blocks
+                    .get(idx)
+                    .map(|b| b.kind == BodyBlockKind::Prose || b.kind == BodyBlockKind::Heading)
+                    .unwrap_or(false);
+            }
+        }
+        false
+    }
+
+    /// Apply translated segment values; non-translatable segments are copied from `source` when provided.
+    pub fn apply_segment_updates(
+        &mut self,
+        updates: &HashMap<String, String>,
+        source: Option<&MdxDocument>,
+    ) {
+        for (key, value) in updates {
+            if key.starts_with("frontmatter:") {
+                let field = key.strip_prefix("frontmatter:").unwrap_or("");
+                if self.frontmatter.contains_key(field) {
+                    self.frontmatter.insert(field.to_string(), value.clone());
+                }
+            } else if let Some(idx_str) = key.strip_prefix("body:") {
+                if let Ok(idx) = idx_str.parse::<usize>() {
+                    if let Some(block) = self.body_blocks.get_mut(idx) {
+                        block.content = value.clone();
+                    }
+                }
+            }
+        }
+
+        if let Some(src) = source {
+            for (key, value) in src.segment_values() {
+                if !self.is_translatable_segment_key(&key) {
+                    if key.starts_with("frontmatter:") {
+                        let field = key.strip_prefix("frontmatter:").unwrap_or("");
+                        if !updates.contains_key(&key) {
+                            self.frontmatter.insert(field.to_string(), value);
+                        }
+                    } else if let Some(idx_str) = key.strip_prefix("body:") {
+                        if let Ok(idx) = idx_str.parse::<usize>() {
+                            if !updates.contains_key(&key) {
+                                if let Some(block) = self.body_blocks.get_mut(idx) {
+                                    if let Some(src_block) = src.body_blocks.get(idx) {
+                                        block.content = src_block.content.clone();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    pub fn translatable_segment_keys(&self) -> Vec<String> {
+        self.segment_values()
+            .keys()
+            .filter(|k| self.is_translatable_segment_key(k))
+            .cloned()
+            .collect()
+    }
+
     pub fn heading_count(&self) -> usize {
         self.body_blocks
             .iter()

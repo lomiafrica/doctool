@@ -1,9 +1,13 @@
 pub mod config;
+pub mod diff;
 pub mod drift;
 pub mod graph;
 pub mod i18n;
+pub mod improve;
 pub mod index;
 pub mod intel;
+pub mod llm;
+pub mod provenance;
 pub mod rerank;
 pub mod snapshot;
 pub mod sources;
@@ -11,7 +15,14 @@ pub mod sources;
 pub use config::{find_monorepo_root, DoctoolConfig, I18nConfig};
 pub use drift::{build_drift_report, build_next_steps, merge_ts_errors, DriftIssue, DriftReport};
 pub use graph::{build_knowledge_graph, KnowledgeGraph};
-pub use i18n::{run_sync_i18n, LockFileManager, SyncI18nOptions, SyncI18nReport};
+pub use diff::{diff_text, run_diff, DiffFormat, DiffReport};
+pub use i18n::{
+    run_sync_i18n, run_translate_i18n, LockFileManager, SyncI18nOptions, SyncI18nReport,
+    TranslateI18nOptions, TranslateI18nReport,
+};
+pub use improve::{run_improve, ImproveOptions, ImproveReport};
+pub use llm::LlmConfig;
+pub use provenance::GitProvenance;
 pub use index::CodeIndex;
 pub use snapshot::{DoctoolEngine, DoctoolSnapshot};
 

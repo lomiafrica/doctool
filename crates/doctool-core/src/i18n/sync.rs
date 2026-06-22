@@ -189,7 +189,7 @@ fn translatable_frontmatter_keys(doc: &MdxDocument) -> impl Iterator<Item = &Str
         .filter(|k| *k == "title" || *k == "description")
 }
 
-fn scaffold_fr_stub(en_doc: &MdxDocument, target: &str) -> String {
+pub(crate) fn scaffold_fr_stub(en_doc: &MdxDocument, target: &str) -> String {
     let mut fm = en_doc.frontmatter.clone();
     if let Some(title) = fm.get_mut("title") {
         *title = format!("[TODO] {title}");

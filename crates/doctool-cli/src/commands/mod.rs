@@ -1,6 +1,9 @@
 pub mod check;
+pub mod diff;
 pub mod drift;
 pub mod graph;
+pub mod improve;
 pub mod scan;
 pub mod scaffold;
 pub mod sync_i18n;
+pub mod translate_i18n;

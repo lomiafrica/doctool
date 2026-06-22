@@ -39,12 +39,22 @@ cargo run -p doctool-cli -- scan --root /path/to/lomi.
 | `dt drift` | Rust-native drift report + optional TS `docs-drift.ts` |
 | `dt graph` | Export operations ↔ guides ↔ SDK knowledge graph JSON |
 | `dt scaffold` | `CONFIRM_BOOTSTRAP=1 pnpm run api:regenerate-rest-reference` |
+| `dt sync-i18n` | Deterministic i18n gap/stale/structure checks + lock refresh (`--check`, `--dry-run`, `--lock`) |
+| `dt translate-i18n` | LLM incremental segment translation for `.fr.mdx` siblings (`--check`, `--dry-run`, `--force`) |
+| `dt improve` | Improve MDX prose with RAG context (`--path`, `--stdout`, `--output`) |
+| `dt diff` | Unified diff vs canonical MDX (`--path`, `--proposed`) |
 
 ### Flags
 
 - `--root <path>` — monorepo root (auto-detected via `apps/docs/package.json`)
 - `--config <path>` — `doctool.config.toml` override
 - `--json` — machine-readable output
+
+### LLM configuration
+
+Set `DOCTOOL_LLM_API_KEY` (or `OPENAI_API_KEY`) for `translate-i18n` and `improve`. Use `DOCTOOL_LLM_MOCK=1` or `provider = "mock"` in config for CI.
+
+See `[llm]` in [`doctool.config.toml`](./doctool.config.toml).
 
 ## Configuration
 
@@ -63,6 +73,10 @@ lomi docs scan
 lomi docs drift
 lomi docs graph
 lomi docs scaffold
+lomi docs sync-i18n
+lomi docs translate-i18n
+lomi docs improve --path build/usage-billing.mdx --stdout
+lomi docs diff --path build/usage-billing.mdx
 ```
 
 Build doctool first (`cargo build` in `apps/doctool`) or install the `dt` binary on `PATH`.

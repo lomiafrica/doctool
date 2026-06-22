@@ -68,6 +68,40 @@ enum Commands {
         #[arg(long)]
         lock: bool,
     },
+    /// LLM incremental segment translation for locale siblings
+    TranslateI18n {
+        /// Report pending translations without calling the LLM
+        #[arg(long)]
+        check: bool,
+        /// Preview work without writing files or refreshing lock
+        #[arg(long)]
+        dry_run: bool,
+        /// Translate all translatable segments (ignore lock deltas)
+        #[arg(long)]
+        force: bool,
+    },
+    /// Improve MDX prose with RAG context (does not write to content/docs by default)
+    Improve {
+        /// MDX path relative to docs content root
+        #[arg(long)]
+        path: String,
+        /// Print improved MDX to stdout
+        #[arg(long)]
+        stdout: bool,
+        /// Write improved MDX under this directory
+        #[arg(long)]
+        output: Option<PathBuf>,
+    },
+    /// Unified diff between canonical MDX and proposed content
+    Diff {
+        #[arg(long)]
+        path: String,
+        /// Proposed MDX file to compare against canonical on-disk content
+        #[arg(long)]
+        proposed: Option<PathBuf>,
+        #[arg(long, default_value = "unified")]
+        format: String,
+    },
 }
 
 #[tokio::main]
@@ -108,5 +142,30 @@ async fn main() -> Result<()> {
             )
             .await
         }
+        Commands::TranslateI18n {
+            check,
+            dry_run,
+            force,
+        } => {
+            commands::translate_i18n::run(
+                &config,
+                &monorepo_root,
+                json,
+                check,
+                dry_run,
+                force,
+            )
+            .await
+        }
+        Commands::Improve {
+            path,
+            stdout,
+            output,
+        } => commands::improve::run(&config, &monorepo_root, json, path, stdout, output).await,
+        Commands::Diff {
+            path,
+            proposed,
+            format,
+        } => commands::diff::run(&config, &monorepo_root, json, path, proposed, format).await,
     }
 }

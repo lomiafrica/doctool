@@ -11,7 +11,7 @@ Doctool is the Rust documentation intelligence layer for the lomi. monorepo. Tes
 3. **Scan + snapshot** — Code intel indexing and `.doctool/` cache round-trip.
 4. **CLI contract** — `dt ` and `lomi docs *` behave predictably in CI and locally.
 
-LLM-powered `improve` (v1.1) and review UI (Phase 3) are **out of scope** for current tests.
+LLM-powered `improve` and `translate-i18n` use a mock provider in CI (`DOCTOOL_LLM_MOCK=1`). Review UI (Phase 3) is out of scope for current tests.
 
 ---
 
@@ -109,6 +109,10 @@ cargo test -p doctool-cli --test cli_smoke
 | `drift/report` | `merge_ts_errors` | ✅ all 5 categories | |
 | `graph` | — | ✅ | |
 | `snapshot` | — | ✅ save/load | |
+| `i18n/translate` | — | ✅ mock LLM | |
+| `llm/*` | ✅ chunk, prompt, tokeniser | ✅ via translate | mock provider in CI |
+| `improve/` | — | ❌ | manual with API key |
+| `diff/` | ✅ | — | |
 | `doctool-cli` | — | ✅ cli_smoke | |
 | `pnpm` delegation | — | ❌ | Mocked in v1.1 or CI-only |
 | Real monorepo drift | — | CI only | Known issue: `usage-billing.mdx` dead link |
@@ -129,8 +133,8 @@ cargo test -p doctool-cli --test cli_smoke
 
 ### v1.1 — `improve`, diff, i18n
 
-- [ ] Test harness for LLM commands (mock provider, no network in CI)
-- [ ] `sync-i18n` diff tests against fixture locale pairs
+- [x] Test harness for LLM commands (mock provider, no network in CI)
+- [x] `translate-i18n` integration tests against fixture locale pairs
 - [ ] MCP server contract tests (stdio JSON-RPC)
 
 ### Phase 3 — Review UI

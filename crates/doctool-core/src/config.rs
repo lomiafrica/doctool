@@ -4,6 +4,8 @@ use std::path::{Path, PathBuf};
 use anyhow::{Context, Result};
 use serde::Deserialize;
 
+use crate::llm::LlmConfig;
+
 #[derive(Debug, Clone, Deserialize, Default)]
 pub struct I18nMdxConfig {
     #[serde(default = "default_i18n_include")]
@@ -76,6 +78,8 @@ pub struct DoctoolConfig {
     pub graph_cache: String,
     #[serde(default)]
     pub i18n: Option<I18nConfig>,
+    #[serde(default)]
+    pub llm: Option<LlmConfig>,
 }
 
 impl Default for DoctoolConfig {
@@ -98,6 +102,7 @@ impl Default for DoctoolConfig {
             index_cache: ".doctool/index.json".into(),
             graph_cache: ".doctool/graph.json".into(),
             i18n: Some(I18nConfig::default()),
+            llm: Some(LlmConfig::default()),
         }
     }
 }
@@ -105,6 +110,10 @@ impl Default for DoctoolConfig {
 impl DoctoolConfig {
     pub fn i18n_config(&self) -> I18nConfig {
         self.i18n.clone().unwrap_or_default()
+    }
+
+    pub fn llm_config(&self) -> LlmConfig {
+        self.llm.clone().unwrap_or_default().resolve()
     }
 
     pub fn load(path: Option<&Path>) -> Result<Self> {

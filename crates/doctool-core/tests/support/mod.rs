@@ -41,3 +41,23 @@ pub fn assert_fixture_root_exists(root: &Path) {
         root.display()
     );
 }
+
+/// Copy the mini-monorepo fixture into a temp directory for mutating tests.
+pub fn copy_mini_fixture_to(dest: &Path) {
+    copy_dir_recursive(&mini_monorepo_root(), dest).expect("copy mini-monorepo fixture");
+}
+
+fn copy_dir_recursive(src: &Path, dest: &Path) -> std::io::Result<()> {
+    std::fs::create_dir_all(dest)?;
+    for entry in std::fs::read_dir(src)? {
+        let entry = entry?;
+        let ty = entry.file_type()?;
+        let target = dest.join(entry.file_name());
+        if ty.is_dir() {
+            copy_dir_recursive(&entry.path(), &target)?;
+        } else {
+            std::fs::copy(entry.path(), &target)?;
+        }
+    }
+    Ok(())
+}

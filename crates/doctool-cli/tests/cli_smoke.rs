@@ -21,6 +21,31 @@ fn help_exits_zero() {
     let stdout = String::from_utf8_lossy(&output.stdout);
     assert!(stdout.contains("scan"));
     assert!(stdout.contains("drift"));
+    assert!(stdout.contains("translate-i18n"));
+}
+
+#[test]
+fn translate_i18n_fixture_dry_run_exits_zero() {
+    let root = fixture_root();
+    let config = root.join("doctool.config.toml");
+    let output = Command::new(dt_bin())
+        .env("DOCTOOL_LLM_MOCK", "1")
+        .args([
+            "--config",
+            config.to_str().unwrap(),
+            "--root",
+            root.to_str().unwrap(),
+            "translate-i18n",
+            "--dry-run",
+        ])
+        .output()
+        .expect("spawn dt translate-i18n --dry-run");
+
+    assert!(
+        output.status.success(),
+        "translate dry-run failed: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
 }
 
 #[test]
