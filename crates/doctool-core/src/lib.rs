@@ -1,4 +1,5 @@
 pub mod config;
+pub mod context;
 pub mod diff;
 pub mod drift;
 pub mod graph;
@@ -11,6 +12,7 @@ pub mod provenance;
 pub mod rerank;
 pub mod snapshot;
 pub mod sources;
+pub mod suggest;
 
 pub use config::{find_monorepo_root, DoctoolConfig, I18nConfig};
 pub use drift::{build_drift_report, build_next_steps, merge_ts_errors, DriftIssue, DriftReport};
@@ -25,6 +27,7 @@ pub use llm::LlmConfig;
 pub use provenance::GitProvenance;
 pub use index::CodeIndex;
 pub use snapshot::{DoctoolEngine, DoctoolSnapshot};
+pub use suggest::{run_suggest, SuggestAction, SuggestOptions, SuggestReport};
 
 #[cfg(test)]
 mod tests {

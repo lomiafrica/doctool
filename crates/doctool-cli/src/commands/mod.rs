@@ -5,5 +5,6 @@ pub mod graph;
 pub mod improve;
 pub mod scan;
 pub mod scaffold;
+pub mod suggest;
 pub mod sync_i18n;
 pub mod translate_i18n;

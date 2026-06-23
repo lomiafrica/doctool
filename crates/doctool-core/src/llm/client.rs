@@ -3,7 +3,10 @@ use async_trait::async_trait;
 use serde::Deserialize;
 
 use super::config::LlmConfig;
-use super::prompt::{create_improve_prompt, create_translate_prompt, ImprovePromptInput, TranslatePromptOptions};
+use super::prompt::{
+    create_improve_prompt, create_suggest_prompt, create_translate_prompt, ImprovePromptInput,
+    SuggestLlmInput, SuggestLlmPlan, TranslatePromptOptions,
+};
 
 #[derive(Debug, Clone)]
 pub struct SegmentTranslation {
@@ -134,6 +137,12 @@ impl LlmClient {
             .context("empty LLM improve response")?;
         Ok(content.trim().to_string())
     }
+
+    pub async fn suggest_plan(&self, input: &SuggestLlmInput) -> Result<SuggestLlmPlan> {
+        let prompt = create_suggest_prompt(input);
+        let raw = self.chat_json(&prompt).await?;
+        serde_json::from_str(&raw).context("parse suggest plan JSON from LLM")
+    }
 }
 
 #[derive(Debug, Deserialize)]
@@ -215,4 +224,13 @@ pub async fn improve_mdx_content(
 
     let client = LlmClient::new(config.clone());
     client.improve_mdx(input).await
+}
+
+pub async fn suggest_plan(config: &LlmConfig, input: &SuggestLlmInput) -> Result<SuggestLlmPlan> {
+    if config.use_mock() {
+        return Ok(super::mock::mock_suggest_plan(input));
+    }
+
+    let client = LlmClient::new(config.clone());
+    client.suggest_plan(input).await
 }

@@ -14,6 +14,28 @@ pub struct ImprovePromptInput {
     pub competitor_context: String,
 }
 
+#[derive(Debug, Clone)]
+pub struct SuggestLlmInput {
+    pub drift_summary: String,
+    pub next_steps: Vec<String>,
+    pub code_context: String,
+    pub knowledge_graph_stats: String,
+}
+
+#[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
+pub struct SuggestRecommendation {
+    pub priority: u8,
+    pub title: String,
+    pub command: Option<String>,
+    pub rationale: String,
+}
+
+#[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
+pub struct SuggestLlmPlan {
+    pub summary: String,
+    pub recommendations: Vec<SuggestRecommendation>,
+}
+
 fn language_name(code: &str) -> &str {
     match code {
         "en" => "English",
@@ -89,6 +111,41 @@ pub fn create_improve_prompt(input: &ImprovePromptInput) -> String {
         input.competitor_context,
         input.page_path,
         input.current_content
+    )
+}
+
+pub fn create_suggest_prompt(input: &SuggestLlmInput) -> String {
+    let steps = if input.next_steps.is_empty() {
+        "(none)".into()
+    } else {
+        input
+            .next_steps
+            .iter()
+            .map(|s| format!("- {s}"))
+            .collect::<Vec<_>>()
+            .join("\n")
+    };
+
+    format!(
+        "You are a documentation maintainer for lomi., a payments platform.\n\n\
+         Task: Given drift findings and code context, produce a prioritized maintenance plan.\n\n\
+         Rules:\n\
+         - Prefer executable `dt` / `pnpm` commands already listed when they apply\n\
+         - Do not invent API paths or SDK methods not supported by the code context\n\
+         - Separate deterministic fixes (scaffold, regenerate manifests) from prose/i18n work\n\
+         - Keep recommendations actionable for a single PR cycle\n\n\
+         Drift summary by category: {}\n\n\
+         Deterministic next steps already detected:\n{}\n\n\
+         Knowledge graph: {}\n\n\
+         Relevant code snippets:\n{}\n\n\
+         Respond with JSON only:\n\
+         {{\"summary\": \"2-4 sentence overview\", \"recommendations\": [\
+         {{\"priority\": 1, \"title\": \"short title\", \"command\": \"optional shell command\", \"rationale\": \"why\"}}\
+         ]}}",
+        input.drift_summary,
+        steps,
+        input.knowledge_graph_stats,
+        input.code_context
     )
 }
 

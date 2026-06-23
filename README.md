@@ -43,6 +43,7 @@ cargo run -p doctool-cli -- scan --root /path/to/lomi.
 | `dt translate-i18n` | LLM incremental segment translation for `.fr.mdx` siblings (`--check`, `--dry-run`, `--force`) |
 | `dt improve` | Improve MDX prose with RAG context (`--path`, `--stdout`, `--output`) |
 | `dt diff` | Unified diff vs canonical MDX (`--path`, `--proposed`) |
+| `dt suggest` | Scan codebase + drift, merge executable commands with LLM plan (`--skip-ai`, `--skip-ts`) |
 
 ### Flags
 

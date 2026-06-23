@@ -5,6 +5,7 @@ use anyhow::{Context, Result};
 use serde::Serialize;
 
 use crate::config::DoctoolConfig;
+use crate::context::{build_code_index, format_code_context, queries_for_page};
 use crate::diff::{diff_text, DiffFormat};
 use crate::llm::{
     improve_mdx_content, ImprovePromptInput,
@@ -48,7 +49,12 @@ pub async fn run_improve(
     let style_guide = load_style_guide(monorepo_root);
     let openapi_context = build_openapi_context(config, monorepo_root, &doc);
     let competitor_context = build_competitor_context(config, monorepo_root, page_path);
-    let code_context = String::from("(run `dt scan` for code RAG context)");
+
+    let llm_config = config.llm_config();
+    let embed = llm_config.api_key().is_some() && !llm_config.use_mock();
+    let code_index = build_code_index(config, monorepo_root, embed).await?;
+    let queries = queries_for_page(page_path, &doc);
+    let code_context = format_code_context(&code_index, &queries, 12).await;
 
     let prompt_input = ImprovePromptInput {
         page_path: page_path.to_string(),

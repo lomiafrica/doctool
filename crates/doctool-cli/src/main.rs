@@ -102,6 +102,18 @@ enum Commands {
         #[arg(long, default_value = "unified")]
         format: String,
     },
+    /// Scan codebase + drift, then suggest prioritized fixes (deterministic + LLM)
+    Suggest {
+        /// Skip the TypeScript docs-drift script
+        #[arg(long)]
+        skip_ts: bool,
+        /// Deterministic actions only (no LLM narrative)
+        #[arg(long)]
+        skip_ai: bool,
+        /// Skip i18n structure/gap checks
+        #[arg(long)]
+        no_i18n: bool,
+    },
 }
 
 #[tokio::main]
@@ -167,5 +179,20 @@ async fn main() -> Result<()> {
             proposed,
             format,
         } => commands::diff::run(&config, &monorepo_root, json, path, proposed, format).await,
+        Commands::Suggest {
+            skip_ts,
+            skip_ai,
+            no_i18n,
+        } => {
+            commands::suggest::run(
+                &config,
+                &monorepo_root,
+                json,
+                skip_ts,
+                skip_ai,
+                no_i18n,
+            )
+            .await
+        }
     }
 }
