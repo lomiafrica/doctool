@@ -1,5 +1,6 @@
 //! Merge deterministic drift findings with code RAG + LLM recommendations.
 
+use std::collections::BTreeMap;
 use std::path::Path;
 
 use anyhow::Result;
@@ -29,7 +30,14 @@ pub struct SuggestAction {
 
 #[derive(Debug, Clone, Serialize)]
 pub struct SuggestReport {
+    pub blocking_issue_count: usize,
+    pub i18n_warning_count: usize,
+    pub i18n_by_category: BTreeMap<String, usize>,
+    /// `locale_structure` issues under `api/` (heading EN ≠ FR).
+    pub i18n_api_structure_count: usize,
+    /// Deprecated alias — same as `blocking_issue_count`.
     pub drift_issue_count: usize,
+    /// Deprecated alias — same as `i18n_warning_count`.
     pub i18n_issue_count: usize,
     pub actions: Vec<SuggestAction>,
     pub executable_commands: Vec<String>,
@@ -113,7 +121,14 @@ pub async fn run_suggest(
 
     actions.sort_by(|a, b| a.priority.cmp(&b.priority).then(a.title.cmp(&b.title)));
 
+    let i18n_by_category = summarize_i18n_categories(&i18n_issues);
+    let i18n_api_structure_count = count_api_structure_issues(&i18n_issues);
+
     Ok(SuggestReport {
+        blocking_issue_count: drift.issue_count,
+        i18n_warning_count: i18n_issues.len(),
+        i18n_by_category,
+        i18n_api_structure_count,
         drift_issue_count: drift.issue_count,
         i18n_issue_count: i18n_issues.len(),
         actions,
@@ -194,6 +209,27 @@ fn summarize_issues(issues: &[DriftIssue]) -> String {
         .map(|(cat, n)| format!("{cat}: {n}"))
         .collect::<Vec<_>>()
         .join(", ")
+}
+
+fn summarize_i18n_categories(issues: &[DriftIssue]) -> BTreeMap<String, usize> {
+    let mut counts = BTreeMap::new();
+    for issue in issues {
+        *counts.entry(issue.category.clone()).or_insert(0) += 1;
+    }
+    counts
+}
+
+fn count_api_structure_issues(issues: &[DriftIssue]) -> usize {
+    issues
+        .iter()
+        .filter(|issue| {
+            issue.category == "locale_structure"
+                && issue
+                    .file
+                    .as_deref()
+                    .is_some_and(|path| path.starts_with("api/"))
+        })
+        .count()
 }
 
 fn graph_stats(config: &DoctoolConfig, monorepo_root: &Path) -> String {

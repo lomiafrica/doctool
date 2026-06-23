@@ -26,10 +26,54 @@ pub async fn run(
     }
 
     println!("{}", "dt suggest".bold());
-    println!(
-        "  Drift issues: {} | i18n issues: {}",
-        report.drift_issue_count, report.i18n_issue_count
-    );
+    println!();
+
+    if report.blocking_issue_count == 0 {
+        println!(
+            "  {} Blocking (drift): {} — API, links, and SDK alignment look good",
+            "✓".green(),
+            report.blocking_issue_count
+        );
+    } else {
+        println!(
+            "  {} Blocking (drift): {} — fix before merge",
+            "✗".red(),
+            report.blocking_issue_count
+        );
+    }
+
+    if no_i18n {
+        println!("  (i18n checks skipped with --no-i18n)");
+    } else if report.i18n_warning_count == 0 {
+        println!(
+            "  {} Warnings (i18n): {} — EN/FR structure aligned",
+            "✓".green(),
+            report.i18n_warning_count
+        );
+    } else {
+        println!(
+            "  {} Warnings (i18n): {} — non-blocking; mostly heading/link parity",
+            "!".yellow(),
+            report.i18n_warning_count
+        );
+        for (category, count) in &report.i18n_by_category {
+            let hint = if *category == "locale_structure" && report.i18n_api_structure_count > 0 {
+                format!(
+                    " ({} under api/* — often missing « See also » / « Voir aussi » in FR)",
+                    report.i18n_api_structure_count
+                )
+            } else {
+                String::new()
+            };
+            println!("      {category}: {count}{hint}");
+        }
+        println!(
+            "    Details: {} · baseline: {}",
+            "dt sync-i18n --check".cyan(),
+            "dt sync-i18n --lock".cyan()
+        );
+    }
+
     if let Some(summary) = &report.ai_summary {
         println!("\n{}", "Summary".bold());
         println!("  {summary}");

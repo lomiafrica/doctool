@@ -114,6 +114,8 @@ enum Commands {
         #[arg(long)]
         no_i18n: bool,
     },
+    /// Check local setup and monorepo readiness for doctool
+    Doctor,
 }
 
 #[tokio::main]
@@ -194,5 +196,6 @@ async fn main() -> Result<()> {
             )
             .await
         }
+        Commands::Doctor => commands::doctor::run(&config, &monorepo_root, json),
     }
 }
