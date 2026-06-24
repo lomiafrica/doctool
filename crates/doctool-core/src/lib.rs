@@ -1,6 +1,7 @@
 pub mod config;
 pub mod context;
 pub mod diff;
+pub mod doctor;
 pub mod drift;
 pub mod graph;
 pub mod i18n;
@@ -15,12 +16,13 @@ pub mod sources;
 pub mod suggest;
 
 pub use config::{find_monorepo_root, DoctoolConfig, I18nConfig};
+pub use doctor::{run_doctor, DoctorCheck, DoctorReport, DoctorStatus};
 pub use drift::{build_drift_report, build_next_steps, merge_ts_errors, DriftIssue, DriftReport};
 pub use graph::{build_knowledge_graph, KnowledgeGraph};
 pub use diff::{diff_text, run_diff, DiffFormat, DiffReport};
 pub use i18n::{
     run_sync_i18n, run_translate_i18n, LockFileManager, SyncI18nOptions, SyncI18nReport,
-    TranslateI18nOptions, TranslateI18nReport,
+    TranslateI18nOptions, TranslateI18nReport, TranslatePageResult,
 };
 pub use improve::{run_improve, ImproveOptions, ImproveReport};
 pub use llm::LlmConfig;

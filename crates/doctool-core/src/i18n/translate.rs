@@ -35,6 +35,8 @@ pub struct TranslatePageResult {
 pub struct TranslateI18nReport {
     pub pages: Vec<TranslatePageResult>,
     pub pending_segments: usize,
+    pub lock_exists: bool,
+    pub lock_path: String,
     pub provenance: GitProvenance,
     pub lock_updated: bool,
 }
@@ -56,6 +58,8 @@ pub async fn run_translate_i18n(
     );
 
     let mut lock_mgr = LockFileManager::load(monorepo_root, &i18n.lock_cache)?;
+    let lock_path = lock_mgr.lock_path().to_string_lossy().into_owned();
+    let lock_exists = lock_mgr.exists();
     let provider = LlmClient::from_resolved(llm_config)?;
     let provenance = crate::provenance::collect_git_provenance(monorepo_root);
 
@@ -166,6 +170,8 @@ pub async fn run_translate_i18n(
     Ok(TranslateI18nReport {
         pages,
         pending_segments,
+        lock_exists,
+        lock_path,
         provenance,
         lock_updated,
     })

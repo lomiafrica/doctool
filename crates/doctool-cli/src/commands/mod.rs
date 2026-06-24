@@ -1,5 +1,6 @@
 pub mod check;
 pub mod diff;
+pub mod doctor;
 pub mod drift;
 pub mod graph;
 pub mod improve;

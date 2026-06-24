@@ -44,6 +44,7 @@ cargo run -p doctool-cli -- scan --root /path/to/lomi.
 | `dt improve` | Improve MDX prose with RAG context (`--path`, `--stdout`, `--output`) |
 | `dt diff` | Unified diff vs canonical MDX (`--path`, `--proposed`) |
 | `dt suggest` | Scan codebase + drift, merge executable commands with LLM plan (`--skip-ai`, `--skip-ts`) |
+| `dt doctor` | Check monorepo setup, i18n.lock, pnpm, and first-run notes |
 
 ### Flags
 
