@@ -22,6 +22,43 @@ fn help_exits_zero() {
     assert!(stdout.contains("scan"));
     assert!(stdout.contains("drift"));
     assert!(stdout.contains("translate-i18n"));
+    assert!(stdout.contains("doctor"));
+}
+
+#[test]
+fn doctor_fixture_exits_zero() {
+    let root = fixture_root();
+    let config = root.join("doctool.config.toml");
+    let output = Command::new(dt_bin())
+        .args([
+            "--config",
+            config.to_str().unwrap(),
+            "--root",
+            root.to_str().unwrap(),
+            "doctor",
+        ])
+        .output()
+        .expect("spawn dt doctor");
+
+    assert!(
+        output.status.success(),
+        "doctor failed: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+}
+
+#[test]
+fn doctor_invalid_root_exits_nonzero() {
+    let tmp = tempfile::tempdir().expect("tempdir");
+    let output = Command::new(dt_bin())
+        .args(["--root", tmp.path().to_str().unwrap(), "doctor"])
+        .output()
+        .expect("spawn dt doctor");
+
+    assert!(
+        !output.status.success(),
+        "doctor should fail outside the monorepo"
+    );
 }
 
 #[test]
