@@ -35,7 +35,7 @@ cargo run -p doctool-cli -- scan --root /path/to/lomi.
 | Command | Description |
 | --- | --- |
 | `dt scan` | Index code roots, OpenAPI, MDX, SDK manifest, competitor docs → `.doctool/` |
-| `dt check` | Run `pnpm lint` + `pnpm docs:drift` in `apps/docs` (CI gate) |
+| `dt check` | Run `pnpm lint` + `pnpm docs:drift` + `pnpm screenshots:verify` in `apps/docs` (CI gate) |
 | `dt drift` | Rust-native drift report + optional TS `docs-drift.ts` |
 | `dt graph` | Export operations ↔ guides ↔ SDK knowledge graph JSON |
 | `dt scaffold` | `CONFIRM_BOOTSTRAP=1 pnpm run api:regenerate-rest-reference` |

@@ -77,6 +77,32 @@ pub fn run(monorepo_root: &Path, json: bool) -> Result<()> {
         }
     }
 
+    // Step 3: docs screenshots (1280×720 WebP manifest)
+    if json {
+        run_pnpm_in_docs(monorepo_root, "screenshots:verify")?;
+        steps.push(CheckStepResult {
+            step: "screenshots_verify",
+            status: "passed",
+        });
+    } else {
+        print!("  screenshots:verify ... ");
+        match run_pnpm_in_docs_capture(monorepo_root, "screenshots:verify") {
+            Ok((true, _)) => {
+                println!("{}", "ok".green());
+                steps.push(CheckStepResult {
+                    step: "screenshots_verify",
+                    status: "passed",
+                });
+            }
+            Ok((false, output)) => {
+                println!("{}", "failed".red());
+                eprintln!("{output}");
+                bail!("Docs screenshot verification failed");
+            }
+            Err(e) => return Err(e),
+        }
+    }
+
     if json {
         let report = CheckReport {
             status: "ok",
