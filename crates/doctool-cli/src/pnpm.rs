@@ -2,6 +2,15 @@ use std::process::Command;
 
 use anyhow::{bail, Context, Result};
 
+/// pnpm on Windows is installed as `pnpm.cmd`; the extensionless `pnpm` shim is a shell script.
+fn pnpm_program() -> &'static str {
+    if cfg!(windows) {
+        "pnpm.cmd"
+    } else {
+        "pnpm"
+    }
+}
+
 pub fn run_pnpm_in_docs(monorepo_root: &std::path::Path, script: &str) -> Result<()> {
     let (ok, _) = run_pnpm_in_docs_capture(monorepo_root, script)?;
     if !ok {
@@ -12,7 +21,7 @@ pub fn run_pnpm_in_docs(monorepo_root: &std::path::Path, script: &str) -> Result
 
 pub fn run_pnpm_in_docs_capture(monorepo_root: &std::path::Path, script: &str) -> Result<(bool, String)> {
     let docs_dir = monorepo_root.join("apps/docs");
-    let output = Command::new("pnpm")
+    let output = Command::new(pnpm_program())
         .arg(script)
         .current_dir(&docs_dir)
         .output()
@@ -26,7 +35,7 @@ pub fn run_pnpm_in_docs_capture(monorepo_root: &std::path::Path, script: &str) -
 
 pub fn run_scaffold(monorepo_root: &std::path::Path) -> Result<()> {
     let docs_dir = monorepo_root.join("apps/docs");
-    let status = Command::new("pnpm")
+    let status = Command::new(pnpm_program())
         .arg("run")
         .arg("api:regenerate-rest-reference")
         .env("CONFIRM_BOOTSTRAP", "1")
@@ -42,7 +51,7 @@ pub fn run_scaffold(monorepo_root: &std::path::Path) -> Result<()> {
 
 pub fn run_docs_drift_capture(monorepo_root: &std::path::Path) -> Result<(bool, String)> {
     let docs_dir = monorepo_root.join("apps/docs");
-    let output = Command::new("pnpm")
+    let output = Command::new(pnpm_program())
         .args(["exec", "tsx", "lib/scripts/docs-drift.ts"])
         .current_dir(&docs_dir)
         .output()
