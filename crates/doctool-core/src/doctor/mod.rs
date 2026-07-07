@@ -81,7 +81,7 @@ pub fn run_doctor(config: &DoctoolConfig, monorepo_root: &Path) -> DoctorReport 
         docs_content.display().to_string(),
     );
 
-    let pnpm = command_version("pnpm", &["--version"]);
+    let pnpm = command_version(pnpm_program(), &["--version"]);
     push_check(
         &mut checks,
         "pnpm",
@@ -198,6 +198,14 @@ fn push_check(
         status,
         detail,
     });
+}
+
+fn pnpm_program() -> &'static str {
+    if cfg!(windows) {
+        "pnpm.cmd"
+    } else {
+        "pnpm"
+    }
 }
 
 fn command_version(program: &str, args: &[&str]) -> Option<String> {
