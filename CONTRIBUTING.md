@@ -5,7 +5,7 @@ Maintainer tooling for documentation drift, indexing, i18n, and AI-assisted pros
 ## Local development
 
 ```bash
-cd apps/doctool
+cd apps/tools/doctool
 cargo build
 cargo test --workspace
 ./scripts/smoke-test.sh   # optional: tests + fixture scan/drift + release build
@@ -16,9 +16,9 @@ See **[TESTING.md](./TESTING.md)** for the full test pyramid, fixture layout, co
 Run from monorepo root:
 
 ```bash
-./apps/doctool/target/debug/dt scan --root .
-./apps/doctool/target/debug/dt drift --root . --skip-ts
-./apps/doctool/target/debug/dt check --root .
+./apps/tools/doctool/target/debug/dt scan --root .
+./apps/tools/doctool/target/debug/dt drift --root . --skip-ts
+./apps/tools/doctool/target/debug/dt check --root .
 ```
 
 ## Project layout
@@ -49,9 +49,9 @@ Do **not** copy Tauri-coupled modules (`agent.rs`, `ai/*`, `history.rs`, etc.).
 
 ## CI
 
-`cargo test --workspace` and `dt check` run on PRs that touch `apps/api`, `apps/docs`, `apps/mcp`, or `apps/doctool` (see `.github/workflows/doctool.yml`).
+`cargo test --workspace` and `dt check` run on PRs that touch `apps/api`, `apps/docs`, `apps/mcp`, or `apps/tools/doctool` (see `.github/workflows/app-ci-doctool.yml`).
 
 ## Related docs
 
-- [CORE-38 design brief](../design/docs/note.md)
-- [Maintaining CLI and MCP](../docs/content/docs/resources/contributing/maintaining-cli-mcp.mdx)
+- [CORE-38 design brief](../../design/docs/note.md)
+- [Maintaining CLI and MCP](../../docs/content/docs/resources/contributing/maintaining-cli-mcp.mdx)

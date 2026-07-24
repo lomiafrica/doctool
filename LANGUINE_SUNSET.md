@@ -46,11 +46,11 @@ This document records what was taken from [Languine](https://github.com/languine
 
 Before removing `/Users/babacar/Projects/languine`:
 
-1. [x] `cargo test --workspace` passes in `apps/doctool`
+1. [x] `cargo test --workspace` passes in `apps/tools/doctool`
 2. [x] `dt sync-i18n --check` passes on monorepo (or only known issues)
 3. [x] `dt translate-i18n --dry-run` flags pending segments
 4. [x] `dt improve --path ... --stdout` produces reviewable output (use `DOCTOOL_LLM_MOCK=1` without piping for MDX stdout)
 5. [x] `dt diff` produces unified patch
-6. [x] No `languine` references in lomi monorepo (grep `apps/doctool`)
+6. [x] No `languine` references in lomi monorepo (grep `apps/tools/doctool`)
 7. [ ] Optional: `git clone --mirror` archive of Languine repo
 8. [x] Remove local clone (`/Users/babacar/Projects/languine` deleted)

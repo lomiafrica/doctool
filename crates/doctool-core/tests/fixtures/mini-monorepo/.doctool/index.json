@@ -1,0 +1,283 @@
+{
+  "scanned_at": "2026-07-24T17:31:38.141355+00:00",
+  "monorepo_root": "/Users/babacar/Projects/lomi./apps/tools/doctool/crates/doctool-core/tests/fixtures/mini-monorepo",
+  "code_stats": [
+    {
+      "totalFiles": 1,
+      "totalClasses": 0,
+      "totalFunctions": 1,
+      "totalImports": 0,
+      "totalElements": 2,
+      "totalLines": 4,
+      "languages": {
+        "typescript": 1
+      },
+      "graphNodes": 1,
+      "graphEdges": 0,
+      "scanDurationMs": 1
+    }
+  ],
+  "code_element_count": 2,
+  "openapi": {
+    "operations": [
+      {
+        "method": "GET",
+        "path": "/internal/health",
+        "operation_id": "InternalController_health",
+        "summary": "Internal only"
+      },
+      {
+        "method": "GET",
+        "path": "/products",
+        "operation_id": "ProductsController_list",
+        "summary": "List products"
+      },
+      {
+        "method": "POST",
+        "path": "/refunds",
+        "operation_id": "RefundsController_create",
+        "summary": "Create refund"
+      }
+    ]
+  },
+  "mdx": {
+    "pages": [
+      {
+        "relative_path": "api/orphan/OrphanController_only.mdx",
+        "slug": "api/orphan/OrphanController_only",
+        "locale": "en",
+        "title": "Orphan operation",
+        "description": null,
+        "method": "GET",
+        "path": "/orphan/only-in-docs",
+        "operation_id": "OrphanController_only",
+        "body_preview": "Documents an operation not in the public OpenAPI allowlist.\n"
+      },
+      {
+        "relative_path": "api/products/ProductsController_list.fr.mdx",
+        "slug": "api/products/ProductsController_list",
+        "locale": "fr",
+        "title": "Lister les produits",
+        "description": null,
+        "method": "GET",
+        "path": "/products",
+        "operation_id": "ProductsController_list",
+        "body_preview": "## Aperçu\n\nLister les produits.\n"
+      },
+      {
+        "relative_path": "api/products/ProductsController_list.mdx",
+        "slug": "api/products/ProductsController_list",
+        "locale": "en",
+        "title": "List products",
+        "description": null,
+        "method": "GET",
+        "path": "/products",
+        "operation_id": "ProductsController_list",
+        "body_preview": "## Overview\n\nList products.\n"
+      },
+      {
+        "relative_path": "build/guides/getting-started.mdx",
+        "slug": "build/guides/getting-started",
+        "locale": "en",
+        "title": "Getting started",
+        "description": null,
+        "method": null,
+        "path": null,
+        "operation_id": null,
+        "body_preview": "## Golden path\n\nSee [sandbox](/start/sandbox-payments) and [broken](/api/missing/MissingController_action).\n\nUse `lomi.products.list` in your app.\n"
+      },
+      {
+        "relative_path": "build/guides/orphan-fr-only.fr.mdx",
+        "slug": "build/guides/orphan-fr-only",
+        "locale": "fr",
+        "title": "Orphan FR only",
+        "description": "No EN sibling exists",
+        "method": null,
+        "path": null,
+        "operation_id": null,
+        "body_preview": "# Orphelin\n\nCette page n'a pas de source EN.\n"
+      },
+      {
+        "relative_path": "build/guides/stale-en.fr.mdx",
+        "slug": "build/guides/stale-en",
+        "locale": "fr",
+        "title": "[TODO] Stale guide",
+        "description": "[TODO] EN body changed after lock was written",
+        "method": null,
+        "path": null,
+        "operation_id": null,
+        "body_preview": "# Getting started\n\nOld FR translation that no longer matches EN structure.\n\n## Extra FR section\n\nThis extra heading causes structure drift.\n"
+      },
+      {
+        "relative_path": "build/guides/stale-en.mdx",
+        "slug": "build/guides/stale-en",
+        "locale": "en",
+        "title": "Stale guide",
+        "description": "EN body changed after lock was written",
+        "method": null,
+        "path": null,
+        "operation_id": null,
+        "body_preview": "# Getting started\n\nThis EN paragraph was updated after the lock file was created.\n"
+      },
+      {
+        "relative_path": "start/sandbox-payments.mdx",
+        "slug": "start/sandbox-payments",
+        "locale": "en",
+        "title": "Sandbox payments",
+        "description": null,
+        "method": null,
+        "path": null,
+        "operation_id": null,
+        "body_preview": "Sandbox guide.\n"
+      }
+    ],
+    "valid_slugs": [
+      "start/sandbox-payments",
+      "api/products",
+      "build/guides/stale-en",
+      "api/orphan/OrphanController_only",
+      "build/guides/orphan-fr-only",
+      "build/guides",
+      "api/orphan",
+      "api/products/ProductsController_list",
+      "build/guides/getting-started"
+    ]
+  },
+  "sdk": {
+    "methods": [
+      {
+        "service": "products",
+        "method": "list",
+        "qualified": "lomi.products.list"
+      },
+      {
+        "service": "refunds",
+        "method": "create",
+        "qualified": "lomi.refunds.create"
+      },
+      {
+        "service": "refunds",
+        "method": "neverMentionedInDocs",
+        "qualified": "lomi.refunds.neverMentionedInDocs"
+      }
+    ]
+  },
+  "competitors": {
+    "documents": [
+      {
+        "provider": "stripe",
+        "relative_path": "stripe/docs/payments.md",
+        "title": "Stripe payments",
+        "size_bytes": 79
+      }
+    ]
+  },
+  "knowledge_graph": {
+    "nodes": [
+      {
+        "id": "op:GET /internal/health",
+        "kind": "operation",
+        "label": "GET /internal/health"
+      },
+      {
+        "id": "op:GET /products",
+        "kind": "operation",
+        "label": "GET /products"
+      },
+      {
+        "id": "op:POST /refunds",
+        "kind": "operation",
+        "label": "POST /refunds"
+      },
+      {
+        "id": "doc:api/orphan/OrphanController_only",
+        "kind": "api_doc",
+        "label": "Orphan operation"
+      },
+      {
+        "id": "doc:api/products/ProductsController_list",
+        "kind": "api_doc",
+        "label": "List products"
+      },
+      {
+        "id": "doc:build/guides/getting-started",
+        "kind": "guide",
+        "label": "Getting started"
+      },
+      {
+        "id": "doc:build/guides/stale-en",
+        "kind": "guide",
+        "label": "Stale guide"
+      },
+      {
+        "id": "doc:start/sandbox-payments",
+        "kind": "guide",
+        "label": "Sandbox payments"
+      },
+      {
+        "id": "sdk:lomi.products.list",
+        "kind": "sdk_method",
+        "label": "lomi.products.list"
+      },
+      {
+        "id": "sdk:lomi.refunds.create",
+        "kind": "sdk_method",
+        "label": "lomi.refunds.create"
+      },
+      {
+        "id": "sdk:lomi.refunds.neverMentionedInDocs",
+        "kind": "sdk_method",
+        "label": "lomi.refunds.neverMentionedInDocs"
+      }
+    ],
+    "edges": [
+      {
+        "from": "doc:api/orphan/OrphanController_only",
+        "to": "op:GET /orphan/only-in-docs",
+        "relation": "documents"
+      },
+      {
+        "from": "doc:api/products/ProductsController_list",
+        "to": "op:GET /products",
+        "relation": "documents"
+      }
+    ]
+  },
+  "drift_issues": [
+    {
+      "category": "missing_endpoint",
+      "message": "OpenAPI operation missing MDX: POST /refunds",
+      "file": null
+    },
+    {
+      "category": "orphan_doc",
+      "message": "MDX documents unknown or non-public OpenAPI operation: GET /orphan/only-in-docs",
+      "file": "api/orphan/OrphanController_only.mdx"
+    },
+    {
+      "category": "locale_gap",
+      "message": "Missing French sibling for api/orphan/OrphanController_only.mdx",
+      "file": "api/orphan/OrphanController_only.mdx"
+    },
+    {
+      "category": "locale_gap",
+      "message": "Missing French sibling for build/guides/getting-started.mdx",
+      "file": "build/guides/getting-started.mdx"
+    },
+    {
+      "category": "locale_gap",
+      "message": "Missing French sibling for start/sandbox-payments.mdx",
+      "file": "start/sandbox-payments.mdx"
+    },
+    {
+      "category": "sdk_unmentioned",
+      "message": "SDK method not mentioned in docs: lomi.refunds.neverMentionedInDocs",
+      "file": null
+    },
+    {
+      "category": "guide_dead_link",
+      "message": "Dead internal link in build/guides/getting-started.mdx: /api/missing/MissingController_action",
+      "file": "build/guides/getting-started.mdx"
+    }
+  ]
+}

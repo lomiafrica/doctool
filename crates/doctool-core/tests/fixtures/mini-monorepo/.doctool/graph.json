@@ -1,0 +1,71 @@
+{
+  "nodes": [
+    {
+      "id": "op:GET /internal/health",
+      "kind": "operation",
+      "label": "GET /internal/health"
+    },
+    {
+      "id": "op:GET /products",
+      "kind": "operation",
+      "label": "GET /products"
+    },
+    {
+      "id": "op:POST /refunds",
+      "kind": "operation",
+      "label": "POST /refunds"
+    },
+    {
+      "id": "doc:api/orphan/OrphanController_only",
+      "kind": "api_doc",
+      "label": "Orphan operation"
+    },
+    {
+      "id": "doc:api/products/ProductsController_list",
+      "kind": "api_doc",
+      "label": "List products"
+    },
+    {
+      "id": "doc:build/guides/getting-started",
+      "kind": "guide",
+      "label": "Getting started"
+    },
+    {
+      "id": "doc:build/guides/stale-en",
+      "kind": "guide",
+      "label": "Stale guide"
+    },
+    {
+      "id": "doc:start/sandbox-payments",
+      "kind": "guide",
+      "label": "Sandbox payments"
+    },
+    {
+      "id": "sdk:lomi.products.list",
+      "kind": "sdk_method",
+      "label": "lomi.products.list"
+    },
+    {
+      "id": "sdk:lomi.refunds.create",
+      "kind": "sdk_method",
+      "label": "lomi.refunds.create"
+    },
+    {
+      "id": "sdk:lomi.refunds.neverMentionedInDocs",
+      "kind": "sdk_method",
+      "label": "lomi.refunds.neverMentionedInDocs"
+    }
+  ],
+  "edges": [
+    {
+      "from": "doc:api/orphan/OrphanController_only",
+      "to": "op:GET /orphan/only-in-docs",
+      "relation": "documents"
+    },
+    {
+      "from": "doc:api/products/ProductsController_list",
+      "to": "op:GET /products",
+      "relation": "documents"
+    }
+  ]
+}

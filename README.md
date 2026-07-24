@@ -2,12 +2,12 @@
 
 Documentation tooling for the [lomi.](https://lomi.africa) monorepo. Run it as **`dt`**.
 
-**Repository:** [github.com/lomiafrica/doctool](https://github.com/lomiafrica/doctool) — standalone project (not a submodule of lomi).
+**Repository:** [github.com/lomiafrica/doctool](https://github.com/lomiafrica/doctool) — standalone project checked out in the lomi. monorepo as a submodule.
 
-When working inside the lomi monorepo, clone this repo to `apps/doctool`:
+When working inside the lomi monorepo, initialize this repo at `apps/tools/doctool`:
 
 ```bash
-git clone git@github.com:lomiafrica/doctool.git apps/doctool
+git submodule update --init apps/tools/doctool
 ```
 
 Built on a portable fork of the Composer `code_intel` engine (tree-sitter scan, hybrid search, cross-encoder rerank) with lomi-specific connectors for OpenAPI, MDX, SDK manifests, and competitor reference docs.
@@ -19,7 +19,7 @@ Built on a portable fork of the Composer `code_intel` engine (tree-sitter scan, 
 From the monorepo root:
 
 ```bash
-cd apps/doctool
+cd apps/tools/doctool
 cargo build --release
 cargo install --path crates/doctool-cli   # installs `dt` on PATH
 ```
@@ -81,7 +81,7 @@ lomi docs improve --path build/usage-billing.mdx --stdout
 lomi docs diff --path build/usage-billing.mdx
 ```
 
-Build doctool first (`cargo build` in `apps/doctool`) or install the `dt` binary on `PATH`.
+Build doctool first (`cargo build` in `apps/tools/doctool`) or install the `dt` binary on `PATH`.
 
 ## Prerequisites
 
@@ -108,4 +108,4 @@ Copied from Composer (`composer/src-tauri/src/code_intel/`): `loader`, `parser`,
 - `dt diff` — unified diff vs canonical MDX
 - MCP server wrapping `doctool-core`
 
-See [`apps/design/docs/note.md`](../design/docs/note.md) for the full product plan.
+See [`apps/design/docs/note.md`](../../design/docs/note.md) for the full product plan.

@@ -2,8 +2,8 @@
 # Local smoke test for doctool — mirrors CI steps without full docs:drift on production corpus.
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-DOCTOOL_DIR="$ROOT/apps/doctool"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../../.." && pwd)"
+DOCTOOL_DIR="$ROOT/apps/tools/doctool"
 FIXTURE="$DOCTOOL_DIR/crates/doctool-core/tests/fixtures/mini-monorepo"
 
 echo "==> cargo test (workspace)"

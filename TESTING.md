@@ -72,7 +72,7 @@ Also includes: sample TS for code scan, one competitor markdown file, `apps/docs
 
 ```bash
 # All Rust tests (recommended)
-cd apps/doctool && cargo test --workspace
+cd apps/tools/doctool && cargo test --workspace
 
 # Integration tests only
 cargo test -p doctool-core --test drift_integration
@@ -88,10 +88,10 @@ cargo test -p doctool-cli --test cli_smoke
   sync-i18n --check || true
 
 # Local smoke script (tests + fixture scan/drift + release build)
-./apps/doctool/scripts/smoke-test.sh
+./apps/tools/doctool/scripts/smoke-test.sh
 
 # Full CI gate locally (needs pnpm in apps/docs)
-./apps/doctool/target/release/dt check --root .
+./apps/tools/doctool/target/release/dt check --root .
 ```
 
 ---
