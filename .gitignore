@@ -1,5 +1,10 @@
+# Build
 /target/
+
+# Local
 **/.doctool/
 !crates/doctool-core/tests/fixtures/**/.doctool/
 !crates/doctool-core/tests/fixtures/**/.doctool/i18n.lock
+
+# OS
 .DS_Store
