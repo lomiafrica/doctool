@@ -37,6 +37,6 @@ mod tests {
             .map(|i| (format!("body:{i}"), "Short text.".into()))
             .collect();
         let size = calculate_chunk_size(&items, None);
-        assert!(size >= 1 && size <= 100);
+        assert!((1..=100).contains(&size));
     }
 }

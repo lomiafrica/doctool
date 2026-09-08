@@ -319,6 +319,12 @@ fn find_enclosing_function(
     best.map(|e| e.id.clone())
 }
 
+impl Default for CodeGraphs {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

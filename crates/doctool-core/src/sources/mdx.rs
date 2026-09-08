@@ -85,10 +85,10 @@ pub fn load_mdx_index(content_root: &Path) -> Result<MdxIndex> {
 }
 
 pub(crate) fn split_frontmatter(raw: &str) -> (String, String) {
-    if raw.starts_with("---") {
-        if let Some(end) = raw[3..].find("\n---") {
-            let fm = raw[3..3 + end].trim().to_string();
-            let body = raw[3 + end + 4..].trim_start().to_string();
+    if let Some(rest) = raw.strip_prefix("---") {
+        if let Some(end) = rest.find("\n---") {
+            let fm = rest[..end].trim().to_string();
+            let body = rest[end + 4..].trim_start().to_string();
             return (fm, body);
         }
     }

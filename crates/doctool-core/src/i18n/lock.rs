@@ -166,7 +166,7 @@ mod tests {
         mgr.register_source("build/a.mdx", &initial);
         mgr.save().unwrap();
 
-        let mut mgr2 = LockFileManager::load(tmp.path(), lock_path).unwrap();
+        let mgr2 = LockFileManager::load(tmp.path(), lock_path).unwrap();
         let mut updated = initial.clone();
         updated.insert("frontmatter:title".into(), "Hello world".into());
         let changes = mgr2.get_changes("build/a.mdx", &updated);

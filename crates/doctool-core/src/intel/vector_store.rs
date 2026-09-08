@@ -21,4 +21,8 @@ impl VectorStore {
     pub fn len(&self) -> usize {
         self.embeddings.len()
     }
+
+    pub fn is_empty(&self) -> bool {
+        self.embeddings.is_empty()
+    }
 }

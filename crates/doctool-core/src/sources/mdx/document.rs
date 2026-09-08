@@ -251,7 +251,6 @@ fn split_body_blocks(body: &str) -> Vec<BodyBlock> {
             content: jsx_buf.trim_end().to_string(),
             index,
         });
-        index += 1;
     } else if !prose_buf.is_empty() {
         flush_prose_blocks(&mut blocks, &mut index, &prose_buf);
     }
@@ -264,16 +263,13 @@ fn flush_prose_blocks(blocks: &mut Vec<BodyBlock>, index: &mut usize, prose: &st
     let parser = Parser::new_ext(prose, opts);
 
     let mut current = String::new();
-    let mut in_heading = false;
     let mut in_code = false;
-    let mut code_lang = String::new();
 
     for event in parser {
         match event {
             Event::Start(Tag::Heading { .. }) => {
                 flush_prose(blocks, index, &current);
                 current.clear();
-                in_heading = true;
             }
             Event::End(TagEnd::Heading(..)) => {
                 if !current.trim().is_empty() {
@@ -285,13 +281,12 @@ fn flush_prose_blocks(blocks: &mut Vec<BodyBlock>, index: &mut usize, prose: &st
                     *index += 1;
                 }
                 current.clear();
-                in_heading = false;
             }
             Event::Start(Tag::CodeBlock(kind)) => {
                 flush_prose(blocks, index, &current);
                 current.clear();
                 in_code = true;
-                code_lang = match kind {
+                let code_lang = match kind {
                     CodeBlockKind::Fenced(lang) => lang.to_string(),
                     CodeBlockKind::Indented => String::new(),
                 };
@@ -315,11 +310,7 @@ fn flush_prose_blocks(blocks: &mut Vec<BodyBlock>, index: &mut usize, prose: &st
                 }
             }
             Event::Text(text) => {
-                if in_heading || in_code {
-                    current.push_str(&text);
-                } else {
-                    current.push_str(&text);
-                }
+                current.push_str(&text);
             }
             Event::Code(text) => current.push_str(&text),
             Event::SoftBreak | Event::HardBreak => current.push('\n'),
