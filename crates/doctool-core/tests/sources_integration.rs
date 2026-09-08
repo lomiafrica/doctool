@@ -26,7 +26,9 @@ fn mdx_fixture_indexes_pages_and_slugs() {
     let index = load_mdx_index(&docs).unwrap();
 
     assert!(index.pages.len() >= 5);
-    assert!(index.valid_slugs.contains("api/products/ProductsController_list"));
+    assert!(index
+        .valid_slugs
+        .contains("api/products/ProductsController_list"));
     assert!(index.valid_slugs.contains("start/sandbox-payments"));
 }
 

@@ -91,19 +91,11 @@ impl LockFileManager {
 
         let previous_keys: HashSet<_> = previous_state.keys().cloned().collect();
 
-        let added_keys: Vec<_> = current_keys
-            .difference(&previous_keys)
-            .cloned()
-            .collect();
-        let removed_keys: Vec<_> = previous_keys
-            .difference(&current_keys)
-            .cloned()
-            .collect();
+        let added_keys: Vec<_> = current_keys.difference(&previous_keys).cloned().collect();
+        let removed_keys: Vec<_> = previous_keys.difference(&current_keys).cloned().collect();
         let changed_keys: Vec<_> = current_keys
             .intersection(&previous_keys)
-            .filter(|key| {
-                hash_value(&source_data[*key]) != previous_state[*key]
-            })
+            .filter(|key| hash_value(&source_data[*key]) != previous_state[*key])
             .cloned()
             .collect();
 
@@ -115,7 +107,9 @@ impl LockFileManager {
     }
 
     pub fn has_file(&self, file_path: &str) -> bool {
-        self.lock_file.files.contains_key(&self.relative_key(file_path))
+        self.lock_file
+            .files
+            .contains_key(&self.relative_key(file_path))
     }
 
     pub fn has_stale_segments(
@@ -176,6 +170,8 @@ mod tests {
         let mut updated = initial.clone();
         updated.insert("frontmatter:title".into(), "Hello world".into());
         let changes = mgr2.get_changes("build/a.mdx", &updated);
-        assert!(changes.changed_keys.contains(&"frontmatter:title".to_string()));
+        assert!(changes
+            .changed_keys
+            .contains(&"frontmatter:title".to_string()));
     }
 }

@@ -46,9 +46,11 @@ pub fn load_competitor_index(root: &Path) -> Result<CompetitorIndex> {
             .replace('\\', "/");
 
         let provider = relative.split('/').next().unwrap_or("unknown").to_string();
-        let title = fs::read_to_string(path)
-            .ok()
-            .and_then(|c| c.lines().find(|l| l.starts_with("# ")).map(|l| l[2..].trim().to_string()));
+        let title = fs::read_to_string(path).ok().and_then(|c| {
+            c.lines()
+                .find(|l| l.starts_with("# "))
+                .map(|l| l[2..].trim().to_string())
+        });
 
         documents.push(CompetitorDoc {
             provider,

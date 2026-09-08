@@ -7,13 +7,13 @@ use serde::Serialize;
 
 use crate::config::DoctoolConfig;
 use crate::i18n::lock::LockFileManager;
+use crate::i18n::sync::scaffold_fr_stub;
 use crate::llm::{
     calculate_chunk_size, translate_segments_batched, LlmClient, TranslatePromptOptions,
 };
 use crate::provenance::GitProvenance;
 use crate::sources::i18n::{locale_sibling_path, source_pages_matching};
 use crate::sources::mdx::document::MdxDocument;
-use crate::i18n::sync::scaffold_fr_stub;
 
 #[derive(Debug, Clone, Default)]
 pub struct TranslateI18nOptions {

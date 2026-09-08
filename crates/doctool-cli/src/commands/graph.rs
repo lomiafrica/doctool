@@ -2,10 +2,10 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 use anyhow::Result;
-use doctool_core::{build_knowledge_graph, DoctoolConfig, DoctoolEngine};
 use doctool_core::sources::mdx::load_mdx_index;
 use doctool_core::sources::openapi::load_openapi;
 use doctool_core::sources::sdk::load_sdk_index;
+use doctool_core::{build_knowledge_graph, DoctoolConfig, DoctoolEngine};
 
 pub async fn run(
     config: &DoctoolConfig,
@@ -13,10 +13,7 @@ pub async fn run(
     output: Option<PathBuf>,
     json: bool,
 ) -> Result<()> {
-    let graph = if monorepo_root
-        .join(&config.index_cache)
-        .is_file()
-    {
+    let graph = if monorepo_root.join(&config.index_cache).is_file() {
         let mut engine = DoctoolEngine::new(config.clone(), monorepo_root);
         engine.load_snapshot()?.knowledge_graph
     } else {

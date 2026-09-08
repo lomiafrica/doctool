@@ -5,6 +5,7 @@ use anyhow::Result;
 use serde::{Deserialize, Serialize};
 
 use crate::config::DoctoolConfig;
+use crate::snapshot::DoctoolSnapshot;
 use crate::sources::mdx::{
     all_mdx_content, documented_operations, find_internal_links, load_mdx_index,
     missing_french_siblings,
@@ -13,7 +14,6 @@ use crate::sources::openapi::{
     filter_public_operations, load_expected_public_operations, load_openapi, operations_key,
 };
 use crate::sources::sdk::{load_sdk_index, unmentioned_methods};
-use crate::snapshot::DoctoolSnapshot;
 
 use super::categories::DriftCategory;
 

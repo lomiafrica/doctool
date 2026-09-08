@@ -17,16 +17,16 @@ pub async fn run(config: &DoctoolConfig, monorepo_root: &Path, json: bool) -> Re
     println!("{}", "dt scan".bold());
     println!("  Monorepo: {}", monorepo_root.display());
     println!("  Code elements: {}", snapshot.code_element_count);
-    println!("  OpenAPI operations: {}", snapshot.openapi.operations.len());
+    println!(
+        "  OpenAPI operations: {}",
+        snapshot.openapi.operations.len()
+    );
     println!("  MDX pages: {}", snapshot.mdx.pages.len());
     println!(
         "  Competitor docs: {}",
         snapshot.competitors.documents.len()
     );
-    println!(
-        "  Drift issues (preview): {}",
-        snapshot.drift_issues.len()
-    );
+    println!("  Drift issues (preview): {}", snapshot.drift_issues.len());
     println!(
         "  {} Wrote {}",
         "✓".green(),

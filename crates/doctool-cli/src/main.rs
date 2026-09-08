@@ -161,15 +161,8 @@ async fn main() -> Result<()> {
             dry_run,
             force,
         } => {
-            commands::translate_i18n::run(
-                &config,
-                &monorepo_root,
-                json,
-                check,
-                dry_run,
-                force,
-            )
-            .await
+            commands::translate_i18n::run(&config, &monorepo_root, json, check, dry_run, force)
+                .await
         }
         Commands::Improve {
             path,
@@ -185,17 +178,7 @@ async fn main() -> Result<()> {
             skip_ts,
             skip_ai,
             no_i18n,
-        } => {
-            commands::suggest::run(
-                &config,
-                &monorepo_root,
-                json,
-                skip_ts,
-                skip_ai,
-                no_i18n,
-            )
-            .await
-        }
+        } => commands::suggest::run(&config, &monorepo_root, json, skip_ts, skip_ai, no_i18n).await,
         Commands::Doctor => commands::doctor::run(&config, &monorepo_root, json),
     }
 }

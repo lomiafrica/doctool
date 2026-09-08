@@ -123,10 +123,7 @@ impl DoctoolConfig {
             return toml::from_str(&raw).context("Failed to parse doctool config TOML");
         }
 
-        let candidates = [
-            "doctool.config.toml",
-            "apps/doctool/doctool.config.toml",
-        ];
+        let candidates = ["doctool.config.toml", "apps/doctool/doctool.config.toml"];
 
         for candidate in candidates {
             let path = PathBuf::from(candidate);

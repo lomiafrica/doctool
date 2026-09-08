@@ -2,7 +2,10 @@ mod support;
 
 use std::fs;
 
-use support::{copy_mini_fixture_to, load_fixture_config, mini_monorepo_root, categories_in_report, issues_with_category};
+use support::{
+    categories_in_report, copy_mini_fixture_to, issues_with_category, load_fixture_config,
+    mini_monorepo_root,
+};
 
 use doctool_core::{run_sync_i18n, run_translate_i18n, SyncI18nOptions, TranslateI18nOptions};
 
@@ -58,9 +61,9 @@ fn sync_i18n_stale_points_at_fixture_file() {
     .unwrap();
 
     let stale = issues_with_category(&report.drift, "locale_stale");
-    assert!(stale.iter().any(|i| {
-        i.file.as_deref() == Some("build/guides/stale-en.mdx")
-    }));
+    assert!(stale
+        .iter()
+        .any(|i| { i.file.as_deref() == Some("build/guides/stale-en.mdx") }));
 }
 
 #[test]
@@ -84,9 +87,8 @@ async fn translate_i18n_mock_merges_fr_segments() {
     let tmp = tempfile::tempdir().expect("tempdir");
     copy_mini_fixture_to(tmp.path());
 
-    let config =
-        doctool_core::DoctoolConfig::load(Some(&tmp.path().join("doctool.config.toml")))
-            .expect("fixture config");
+    let config = doctool_core::DoctoolConfig::load(Some(&tmp.path().join("doctool.config.toml")))
+        .expect("fixture config");
 
     let report = run_translate_i18n(
         &config,

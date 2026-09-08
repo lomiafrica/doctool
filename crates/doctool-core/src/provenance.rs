@@ -24,10 +24,18 @@ pub fn collect_git_provenance(monorepo_root: &Path) -> GitProvenance {
 }
 
 fn git_output(cwd: &Path, args: &[&str]) -> Option<String> {
-    let output = Command::new("git").args(args).current_dir(cwd).output().ok()?;
+    let output = Command::new("git")
+        .args(args)
+        .current_dir(cwd)
+        .output()
+        .ok()?;
     if !output.status.success() {
         return None;
     }
     let s = String::from_utf8_lossy(&output.stdout).trim().to_string();
-    if s.is_empty() { None } else { Some(s) }
+    if s.is_empty() {
+        None
+    } else {
+        Some(s)
+    }
 }

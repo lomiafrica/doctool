@@ -2,7 +2,7 @@ use std::path::Path;
 
 use anyhow::{bail, Result};
 use colored::Colorize;
-use doctool_core::{run_doctor, DoctorStatus, DoctoolConfig};
+use doctool_core::{run_doctor, DoctoolConfig, DoctorStatus};
 
 pub fn run(config: &DoctoolConfig, monorepo_root: &Path, json: bool) -> Result<()> {
     let report = run_doctor(config, monorepo_root);

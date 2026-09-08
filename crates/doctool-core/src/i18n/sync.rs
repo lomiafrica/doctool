@@ -5,8 +5,8 @@ use std::path::Path;
 use anyhow::Result;
 
 use crate::config::DoctoolConfig;
-use crate::drift::{build_next_steps, DriftIssue, DriftReport};
 use crate::drift::categories::DriftCategory;
+use crate::drift::{build_next_steps, DriftIssue, DriftReport};
 use crate::i18n::LockFileManager;
 use crate::sources::i18n::{
     detect_locale_from_path, locale_sibling_path, paired_source_path, source_pages_matching,

@@ -57,9 +57,7 @@ pub async fn run_suggest(
     if !options.skip_ts {
         if let Ok((ok, output)) = run_ts_drift_capture(monorepo_root) {
             if !ok {
-                drift
-                    .issues
-                    .extend(crate::drift::merge_ts_errors(&output));
+                drift.issues.extend(crate::drift::merge_ts_errors(&output));
                 drift.issue_count = drift.issues.len();
             }
         }

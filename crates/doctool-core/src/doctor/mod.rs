@@ -229,7 +229,10 @@ mod tests {
         let config = DoctoolConfig::default();
         let report = run_doctor(&config, tmp.path());
         assert!(report.fail_count >= 1);
-        assert!(report.checks.iter().any(|c| c.id == "monorepo" && c.status == DoctorStatus::Fail));
+        assert!(report
+            .checks
+            .iter()
+            .any(|c| c.id == "monorepo" && c.status == DoctorStatus::Fail));
     }
 
     #[test]
@@ -242,6 +245,14 @@ mod tests {
         fs::create_dir_all(fixture.join(".doctool")).ok();
         let config = DoctoolConfig::load(Some(&fixture.join("doctool.config.toml"))).unwrap();
         let report = run_doctor(&config, &fixture);
-        assert_eq!(report.checks.iter().find(|c| c.id == "monorepo").unwrap().status, DoctorStatus::Ok);
+        assert_eq!(
+            report
+                .checks
+                .iter()
+                .find(|c| c.id == "monorepo")
+                .unwrap()
+                .status,
+            DoctorStatus::Ok
+        );
     }
 }

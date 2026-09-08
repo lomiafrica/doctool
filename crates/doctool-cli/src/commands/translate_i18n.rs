@@ -2,7 +2,10 @@ use std::path::Path;
 
 use anyhow::{bail, Result};
 use colored::Colorize;
-use doctool_core::{run_translate_i18n, DoctoolConfig, TranslateI18nOptions, TranslateI18nReport, TranslatePageResult};
+use doctool_core::{
+    run_translate_i18n, DoctoolConfig, TranslateI18nOptions, TranslateI18nReport,
+    TranslatePageResult,
+};
 
 const MAX_PAGE_LIST: usize = 15;
 
@@ -67,11 +70,7 @@ fn print_lock_notice(report: &TranslateI18nReport) {
         return;
     }
     println!();
-    println!(
-        "  {} No i18n.lock at {}",
-        "!".yellow(),
-        report.lock_path
-    );
+    println!("  {} No i18n.lock at {}", "!".yellow(), report.lock_path);
     println!(
         "    All EN segments are treated as pending ({} is not a count of real errors).",
         report.pending_segments

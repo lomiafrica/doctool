@@ -16,11 +16,7 @@ pub fn load_fixture_config() -> DoctoolConfig {
 }
 
 pub fn categories_in_report(report: &doctool_core::DriftReport) -> Vec<&str> {
-    report
-        .issues
-        .iter()
-        .map(|i| i.category.as_str())
-        .collect()
+    report.issues.iter().map(|i| i.category.as_str()).collect()
 }
 
 pub fn issues_with_category<'a>(

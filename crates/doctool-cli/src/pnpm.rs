@@ -19,7 +19,10 @@ pub fn run_pnpm_in_docs(monorepo_root: &std::path::Path, script: &str) -> Result
     Ok(())
 }
 
-pub fn run_pnpm_in_docs_capture(monorepo_root: &std::path::Path, script: &str) -> Result<(bool, String)> {
+pub fn run_pnpm_in_docs_capture(
+    monorepo_root: &std::path::Path,
+    script: &str,
+) -> Result<(bool, String)> {
     let docs_dir = monorepo_root.join("apps/docs");
     let output = Command::new(pnpm_program())
         .arg(script)

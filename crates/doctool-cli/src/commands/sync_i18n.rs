@@ -25,10 +25,7 @@ pub async fn run(
     if json {
         println!("{}", serde_json::to_string_pretty(&report.drift)?);
         if !report.scaffolded.is_empty() {
-            eprintln!(
-                "scaffolded: {}",
-                serde_json::to_string(&report.scaffolded)?
-            );
+            eprintln!("scaffolded: {}", serde_json::to_string(&report.scaffolded)?);
         }
     } else if dry_run {
         println!("{}", "dt sync-i18n --dry-run".bold());

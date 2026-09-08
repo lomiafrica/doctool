@@ -20,12 +20,7 @@ pub struct DiffReport {
 }
 
 /// Produce a unified diff between `original` and `proposed`.
-pub fn diff_text(
-    path: &str,
-    original: &str,
-    proposed: &str,
-    format: DiffFormat,
-) -> DiffReport {
+pub fn diff_text(path: &str, original: &str, proposed: &str, format: DiffFormat) -> DiffReport {
     let patch = match format {
         DiffFormat::Unified => unified_diff(path, original, proposed),
     };

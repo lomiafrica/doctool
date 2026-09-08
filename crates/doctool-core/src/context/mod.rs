@@ -17,9 +17,7 @@ pub async fn build_code_index(
 ) -> Result<CodeIndex> {
     let mut index = CodeIndex::new();
     let roots = config.code_root_paths(monorepo_root);
-    index
-        .scan_roots(&roots)
-        .map_err(|e| anyhow::anyhow!(e))?;
+    index.scan_roots(&roots).map_err(|e| anyhow::anyhow!(e))?;
     if embed {
         index.populate_vectors().await;
     }
@@ -72,7 +70,11 @@ pub fn queries_for_drift_issues(issues: &[DriftIssue]) -> Vec<String> {
         }
 
         if issue.message.contains("OpenAPI operation missing MDX:") {
-            if let Some(op) = issue.message.split("OpenAPI operation missing MDX: ").nth(1) {
+            if let Some(op) = issue
+                .message
+                .split("OpenAPI operation missing MDX: ")
+                .nth(1)
+            {
                 queries.push(op.to_string());
             }
         }

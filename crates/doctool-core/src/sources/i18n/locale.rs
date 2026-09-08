@@ -120,7 +120,11 @@ pub fn source_pages_matching(
     paths
 }
 
-pub fn resolve_docs_relative(monorepo_root: &Path, docs_content_relative: &str, relative: &str) -> PathBuf {
+pub fn resolve_docs_relative(
+    monorepo_root: &Path,
+    docs_content_relative: &str,
+    relative: &str,
+) -> PathBuf {
     monorepo_root.join(docs_content_relative).join(relative)
 }
 

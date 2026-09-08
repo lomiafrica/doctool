@@ -58,10 +58,18 @@ impl DoctoolEngine {
 
         self.code_index.populate_vectors().await;
 
-        let openapi_path = self.config.resolve(&self.monorepo_root, &self.config.openapi);
-        let docs_path = self.config.resolve(&self.monorepo_root, &self.config.docs_content);
-        let sdk_path = self.config.resolve(&self.monorepo_root, &self.config.sdk_manifest);
-        let competitors_path = self.config.resolve(&self.monorepo_root, &self.config.competitors);
+        let openapi_path = self
+            .config
+            .resolve(&self.monorepo_root, &self.config.openapi);
+        let docs_path = self
+            .config
+            .resolve(&self.monorepo_root, &self.config.docs_content);
+        let sdk_path = self
+            .config
+            .resolve(&self.monorepo_root, &self.config.sdk_manifest);
+        let competitors_path = self
+            .config
+            .resolve(&self.monorepo_root, &self.config.competitors);
 
         let openapi = load_openapi(&openapi_path)?;
         let mdx = load_mdx_index(&docs_path)?;
@@ -92,8 +100,12 @@ impl DoctoolEngine {
     }
 
     pub fn save_snapshot(&self, snapshot: &DoctoolSnapshot) -> Result<()> {
-        let index_path = self.config.resolve(&self.monorepo_root, &self.config.index_cache);
-        let graph_path = self.config.resolve(&self.monorepo_root, &self.config.graph_cache);
+        let index_path = self
+            .config
+            .resolve(&self.monorepo_root, &self.config.index_cache);
+        let graph_path = self
+            .config
+            .resolve(&self.monorepo_root, &self.config.graph_cache);
 
         if let Some(parent) = index_path.parent() {
             fs::create_dir_all(parent)?;
@@ -111,7 +123,9 @@ impl DoctoolEngine {
     }
 
     pub fn load_snapshot(&mut self) -> Result<DoctoolSnapshot> {
-        let index_path = self.config.resolve(&self.monorepo_root, &self.config.index_cache);
+        let index_path = self
+            .config
+            .resolve(&self.monorepo_root, &self.config.index_cache);
         let raw = fs::read_to_string(&index_path)
             .with_context(|| format!("Failed to read snapshot at {}", index_path.display()))?;
         let snapshot: DoctoolSnapshot = serde_json::from_str(&raw)?;

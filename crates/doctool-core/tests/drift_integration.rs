@@ -82,7 +82,9 @@ fn drift_dead_link_targets_missing_slug() {
 
     let dead = issues_with_category(&report, "guide_dead_link");
     assert_eq!(dead.len(), 1);
-    assert!(dead[0].message.contains("api/missing/MissingController_action"));
+    assert!(dead[0]
+        .message
+        .contains("api/missing/MissingController_action"));
 }
 
 #[test]

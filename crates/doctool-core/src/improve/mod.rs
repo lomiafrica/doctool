@@ -7,9 +7,7 @@ use serde::Serialize;
 use crate::config::DoctoolConfig;
 use crate::context::{build_code_index, format_code_context, queries_for_page};
 use crate::diff::{diff_text, DiffFormat};
-use crate::llm::{
-    improve_mdx_content, ImprovePromptInput,
-};
+use crate::llm::{improve_mdx_content, ImprovePromptInput};
 use crate::provenance::{collect_git_provenance, GitProvenance};
 use crate::sources::competitors::load_competitor_index;
 use crate::sources::mdx::document::MdxDocument;
@@ -94,12 +92,15 @@ pub async fn run_improve(
 
 fn load_style_guide(monorepo_root: &Path) -> String {
     let path = monorepo_root.join(STYLE_GUIDE_REL);
-    fs::read_to_string(&path).unwrap_or_else(|_| {
-        "Use clear, concise technical prose. Preserve API accuracy.".into()
-    })
+    fs::read_to_string(&path)
+        .unwrap_or_else(|_| "Use clear, concise technical prose. Preserve API accuracy.".into())
 }
 
-fn build_openapi_context(config: &DoctoolConfig, monorepo_root: &Path, doc: &MdxDocument) -> String {
+fn build_openapi_context(
+    config: &DoctoolConfig,
+    monorepo_root: &Path,
+    doc: &MdxDocument,
+) -> String {
     let method = doc.frontmatter.get("method").map(String::as_str);
     let path = doc.frontmatter.get("path").map(String::as_str);
     if method.is_none() && path.is_none() {
