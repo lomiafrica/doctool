@@ -157,6 +157,4 @@ cargo test -p doctool-cli --test cli_smoke
 ## Related
 
 - Linear: [CORE-38](https://linear.app) (doctool)
-- Design brief: `apps/design/docs/note.md`
 - TS drift reference: `apps/docs/lib/scripts/docs-drift.ts`
-- Competitor corpus: `apps/design/docs/competitors/`

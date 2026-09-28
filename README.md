@@ -87,11 +87,7 @@ Build doctool first (`cargo build` in `apps/tools/doctool`) or install the `dt` 
 
 - Rust 1.75+
 - `pnpm` (for `check` / `scaffold`)
-- `apps/design` submodule initialized for competitor corpus indexing:
-
-```bash
-git submodule update --init apps/design
-```
+- Competitor corpus is not in the monorepo. Do not init `apps/design`.
 
 ## Architecture
 
@@ -108,4 +104,3 @@ Copied from Composer (`composer/src-tauri/src/code_intel/`): `loader`, `parser`,
 - `dt diff` — unified diff vs canonical MDX
 - MCP server wrapping `doctool-core`
 
-See [`apps/design/docs/note.md`](../../design/docs/note.md) for the full product plan.
